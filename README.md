@@ -32,9 +32,9 @@ Para manter a atividade produtiva:
 2. **Jogue para aprender**: o foco é o raciocínio histórico, não só “ganhar pontos”.
 3. **Explique suas escolhas**: ao escolher uma resposta, justifique com fatos e contexto.
 4. **Respeite a vez** (duplas/grupos): um controla, o outro explica; depois invertam.
-5. **Sem spoilers**: não grite respostas para outros grupos — faça perguntas-guia.
+5. **Sem spoilers**: não grite respostas para outros grupos - faça perguntas-guia.
 6. **Use vocabulário histórico**: pratique termos e conceitos do período.
-7. **Seja colaborativo(a)**: divergências fazem parte do debate histórico — discutam com respeito.
+7. **Seja colaborativo(a)**: divergências fazem parte do debate histórico - discutam com respeito.
 
 ## Perguntas do Professor (Durante o Jogo)
 
