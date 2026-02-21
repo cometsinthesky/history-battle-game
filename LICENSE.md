@@ -1,4 +1,4 @@
-Biodiversity Battle Online Board Game © 2026 by Lucas Ferreira is licensed under CC BY-NC-ND 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-nd/4.0/
+History Battle Online Board Game © 2026 by Lucas Ferreira is licensed under CC BY-NC-ND 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-nd/4.0/
 
 # Attribution-NonCommercial-NoDerivatives 4.0 International
 
