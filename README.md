@@ -1,71 +1,72 @@
-## History Battle Online Board Game 🕹️🌎📜📚🗺️🏛️𓍝🗓️<img src="https://raw.githubusercontent.com/cometsinthesky/biodiversity-battle-game/main/images/biodiversity-battle-og-image.png" alt="Biodiversity Battle OG Image" width="200" height="200" />
+## History Battle Online Board Game 🕹️🌎📜📚🗺️🏛️𓍝🗓️ <img src="https://raw.githubusercontent.com/cometsinthesky/history-battle-game/main/images/history-battle-og-image.png" alt="History Battle OG Image" width="200" height="200" />
 
-## [Play History Battle Now!](https://cometsinthesky.github.io/biodiversity-battle-game/)
+## [Jogue History Battle Agora!](https://cometsinthesky.github.io/history-battle-game/)
 
-An interactive, classroom-friendly game to support **Biodiversity / Diversity of Living Things** learning - designed for **Middle Years / Year 6–9** contexts and adaptable to different curricula.
+Um jogo interativo e ideal para sala de aula para apoiar a aprendizagem de **História Contemporânea**, com foco em **Primeira Guerra Mundial, Período Entreguerras e Segunda Guerra Mundial** — indicado para **Middle Years / Year 6–9** (adaptável para outros anos e currículos).
 
-This project is ideal for teachers who want a quick, engaging way to reinforce:
-- classification and taxonomy basics
-- characteristics of living things
-- ecosystems and interactions
-- adaptations and survival
-- scientific vocabulary and reasoning
+Este projeto é ideal para professores que querem uma forma rápida e envolvente de reforçar:
+- causas e consequências da Primeira Guerra Mundial
+- tratados, transformações políticas e crises do Entreguerras
+- ascensão dos totalitarismos (fascismo, nazismo, stalinismo)
+- eventos-chave e frentes de batalha da Segunda Guerra Mundial
+- conceitos históricos, leitura de fontes e vocabulário acadêmico
 
-## Learning Goals
+## Objetivos de Aprendizagem
 
-Students will be able to:
-- identify key characteristics of major groups of living things
-- compare organisms using observable traits and evidence
-- apply vocabulary (species, habitat, adaptation, producer/consumer, etc.)
-- justify classification choices using scientific reasoning
-- reflect on biodiversity and human impact
+Os estudantes serão capazes de:
+- identificar causas, eventos e consequências nos períodos estudados
+- organizar fatos em **linha do tempo** e reconhecer relações de causa e efeito
+- analisar conceitos históricos (alianças, imperialismo, propaganda, totalitarismo, genocídio)
+- usar vocabulário histórico com precisão (tratados, frentes, apaziguamento, mobilização, etc.)
+- justificar respostas com base em evidências e contexto histórico
 
-## Grouping Options
-- **Pairs** (recommended): encourages discussion and peer explanation  
-- **Stations**: rotate groups through the game + hands-on sorting cards  
-- **Whole-class**: projector mode, teacher mediates decisions and prompts
+## Formatos de Organização
+- **Duplas** (recomendado): incentiva diálogo e explicação entre colegas  
+- **Estações**: rotacione grupos pelo jogo + atividades curtas (linha do tempo, mapas, fontes)  
+- **Turma toda**: modo projetor, com o(a) professor(a) mediando decisões e perguntas
 
-## Classroom Rules (Simple & Clear)
+## Regras de Sala (Simples e Claras)
 
-To keep the activity productive:
-1. **Materials on the table**: each group must have **one blank sheet of paper**, **a pencil**, and an **eraser** on the desk.
-2. **Play to learn**: focus on reasoning, not just “getting points”.
-3. **Explain your choices**: if you pick an answer, justify it with evidence.
-4. **Respect turn-taking** (pairs/groups): one controls, the other explains; swap roles.
-5. **No spoilers**: don’t shout answers to other groups - ask guiding questions instead.
-6. **Use scientific vocabulary**: challenge yourself to use correct terms.
-7. **Be kind & collaborative**: disagreements are part of science - discuss respectfully.
+Para manter a atividade produtiva:
+1. **Materiais na mesa**: cada grupo deve ter **uma folha em branco**, **lápis** e **borracha**.
+2. **Jogue para aprender**: o foco é o raciocínio histórico, não só “ganhar pontos”.
+3. **Explique suas escolhas**: ao escolher uma resposta, justifique com fatos e contexto.
+4. **Respeite a vez** (duplas/grupos): um controla, o outro explica; depois invertam.
+5. **Sem spoilers**: não grite respostas para outros grupos — faça perguntas-guia.
+6. **Use vocabulário histórico**: pratique termos e conceitos do período.
+7. **Seja colaborativo(a)**: divergências fazem parte do debate histórico — discutam com respeito.
 
-## Teacher Prompts (During Gameplay)
+## Perguntas do Professor (Durante o Jogo)
 
-Use these to deepen thinking:
-- “What evidence supports that classification?”
-- “Which trait is the strongest indicator here?”
-- “Could this organism fit in more than one group? Why?”
-- “How might an adaptation help it survive in its habitat?”
-- “What would happen if this species disappeared from the ecosystem?”
+Use para aprofundar o pensamento:
+- “Qual foi a causa principal e quais foram as causas secundárias aqui?”
+- “Que evidência ou fato sustenta essa resposta?”
+- “Qual consequência (curto e longo prazo) podemos associar a esse evento?”
+- “Como propaganda, economia ou alianças influenciaram essa decisão?”
+- “Como diferentes grupos sociais foram afetados por esse acontecimento?”
 
-## Assessment Ideas
+## Ideias de Avaliação
 
-Quick and easy options:
-- **Exit ticket**: “One new concept I learned + one question I still have.”
-- **Mini-rubric** (0–2 points each): vocabulary, reasoning, collaboration, accuracy
-- **Reflection**: “How does biodiversity support ecosystem stability?”
+Opções rápidas e práticas:
+- **Bilhete de saída**: “Um conceito novo que aprendi + uma dúvida que ficou.”
+- **Mini-rubrica** (0–2 pontos): vocabulário, justificativa, colaboração, precisão histórica
+- **Reflexão**: “Como o período entre guerras contribuiu para a eclosão da Segunda Guerra?”
 
-## Curriculum Connections
+## Conexões com Currículo
 
-Works well with outcomes related to:
-- classification of organisms
-- ecosystems, habitats, and interactions
-- adaptation and survival
-- human impact on biodiversity
-- scientific inquiry and communication
+Funciona bem com habilidades e objetivos ligados a:
+- causas e consequências de guerras e crises
+- totalitarismos, democracia e cidadania
+- leitura e interpretação de mapas, gráficos e linhas do tempo
+- análise de fontes históricas (imagens, discursos, documentos)
+- comunicação histórica (argumentação e escrita)
 
 ---
 
-## ✉️ Contact
+## ✉️ Contato
 
-Created by Lucas Ferreira (MSc. Physics Education, PhD student Science Education (UnB/IF/PPGEduC).  
-If you use this in your classroom, I’d love to hear how it went - feedback and suggestions are welcome!
+Criado por Lucas Ferreira (UnB/IF/PPGEduC) em parceria com Nara Targino (UFPB/PPGH).  
+Se você usar em sala, adoraríamos saber como foi. Feedback e sugestões são muito bem-vindos!
 
 **Email:** [lucasferreiraunb@gmail.com](mailto:lucasferreiraunb@gmail.com)
+
