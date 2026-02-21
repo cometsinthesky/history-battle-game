@@ -1,24 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 
-  <title>Biodiversity Battle Online Board Game</title>
+  <title>History Battle - Jogo de Tabuleiro Online</title>
   <meta name="description"
-    content="Biodiversity Battle is a free online board game for Science classes. Play, learn key biology terms, and earn badges. Created by Lucas Ferreira." />
+    content="History Battle é um jogo de tabuleiro online gratuito para aulas de História. Jogue, aprenda conceitos e eventos do século XX e ganhe medalhas. Criado por Lucas Ferreira." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://cometsinthesky.github.io/biodiversity-battle-game/" />
+  <link rel="canonical" href="https://cometsinthesky.github.io/history-battle-game/" />
 
   <!-- Social Preview, Open Graph for Facebook, LinkedIn, etc. -->
-  <meta property="og:title" content="Biodiversity Battle Online Board Game" />
+  <meta property="og:title" content="History Battle – Jogo de Tabuleiro Online" />
   <meta property="og:description"
-    content="Free online board game for Science lessons about biodiversity, ecosystems, and biology." />
+    content="Jogo online gratuito para aulas de História (Primeira Guerra, Entreguerras e Segunda Guerra). Jogue, responda desafios e ganhe medalhas." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://cometsinthesky.github.io/biodiversity-battle-game/" />
+  <meta property="og:url" content="https://cometsinthesky.github.io/history-battle-game/" />
   <meta property="og:image"
-    content="https://cometsinthesky.github.io/biodiversity-battle-game/images/biodiversity-battle-og-image.jpg" />
+    content="https://cometsinthesky.github.io/history-battle-game/images/history-battle-og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -145,20 +145,20 @@
       border-radius: 14px;
       background: var(--card-strong);
       border: 1px solid rgba(0, 0, 0, .06);
-      flex-wrap: nowrap;      /* NÃO deixa quebrar linha */
-      gap: 2px;              /* espaço entre título e logo */
+      flex-wrap: nowrap;
+      gap: 2px;
     }
 
     .brandLeft{
-      min-width: 0;           /* permite encolher sem quebrar */
-      flex: 1 1 auto;         /* título ocupa o espaço disponível */
+      min-width: 0;
+      flex: 1 1 auto;
     }
 
     .brandLogo{
       width: 80px;
       height: 80px;
       object-fit: contain;
-      flex: 0 0 200px;        /* logo fixa e sempre à direita */
+      flex: 0 0 200px;
     }
 
     .brand h1 {
@@ -238,7 +238,6 @@
       box-shadow: 0 8px 18px rgba(14, 26, 43, .20);
     }
     button.secondary:hover{ filter: brightness(1.03); }
-
 
     button.nextturn{
       background: rgba(37, 182, 80, 0.9);
@@ -399,7 +398,7 @@
       min-height: 0;
 
       background-image:
-        linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)),
+        linear-gradient(rgba(255, 255, 255, .65), rgba(255, 255, 255, .80)),
         url("images/board-bg.png");
       background-size: cover;
       background-position: center;
@@ -443,10 +442,10 @@
 
     @media (max-width: 520px){
       .brand{
-        flex-direction: row;      /* mantém na mesma linha */
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        flex-wrap: nowrap;        /* não quebra */
+        flex-wrap: nowrap;
       }
 
       .brandLeft{
@@ -457,7 +456,7 @@
       .brandLogo{
         width: 80px;
         height: 80px;
-        flex: 0 0 80px;           /* fixa a logo à direita */
+        flex: 0 0 80px;
         object-fit: contain;
       }
     }
@@ -702,7 +701,7 @@
     /* Start selection colors */
     button.pick2{
       background: rgba(244, 180, 0, .95);
-      color: #fff; /* texto branco */
+      color: #fff;
       box-shadow: 0 10px 22px rgba(244, 180, 0, .22);
     }
 
@@ -776,7 +775,7 @@
       text-align: right;
     }
 
-    /* NEW: glow per player row (everyone gets their own color glow) */
+    /* glow per player row */
     .scoreRow.glowRow {
       border-color: var(--rowBorder, rgba(0, 0, 0, .10));
       box-shadow:
@@ -795,7 +794,7 @@
       transform: translateY(-1px);
     }
 
-    /* NEW: bonus overlay */
+    /* bonus overlay */
     .bonusOverlay {
       position: fixed;
       inset: 0;
@@ -915,17 +914,17 @@
     <div class="wrap">
       <aside class="panel">
         <div class="brand">
-          <div>
-            <h1>Biodiversity Battle</h1>
-            <h1>Board Game 🧬</h1>
-            <p>Roll → Answer → Check</p>
+          <div class="brandLeft">
+            <h1>History Battle</h1>
+            <h1>Board Game 🕹️📜</h1>
+            <p>Rolar → Responder → Conferir</p>
           </div>
           <img
               class="brandLogo"
-              src="./images/biodiversity-battle-logo.png"
+              src="./images/history-battle-logo.png"
               width="110"
               height="110"
-              alt="Biodiversity Battle logo"
+              alt="History Battle logo"
               loading="eager"
               decoding="async"
             />
@@ -933,27 +932,27 @@
 
         <div class="controls">
           <div class="row">
-            <button id="btnRoll">🎲 Roll Dice</button>
-            <button class="secondary" id="btnEndTurn">End Turn →</button>
-            <button class="ghost" id="btnReset">Reset Game</button>
+            <button id="btnRoll">🎲 Rolar dado</button>
+            <button class="secondary" id="btnEndTurn">Passar vez →</button>
+            <button class="ghost" id="btnReset">Reiniciar jogo</button>
           </div>
 
           <div class="row">
             <div class="stat">
-              <h2>Dice</h2>
+              <h2>Dado</h2>
               <div class="big" id="diceVal">—</div>
-              <div class="muted" id="diceHint">Roll 1–6 (movement applies only if badge is awarded)</div>
+              <div class="muted" id="diceHint">Role 1–6 (o movimento só vale se a medalha for concedida)</div>
             </div>
             <div class="stat">
-              <h2>Current Player</h2>
+              <h2>Jogador atual</h2>
               <div class="big" id="currentPlayer">—</div>
-              <div class="muted" id="turnHint">Select number of players to start.</div>
+              <div class="muted" id="turnHint">Selecione o número de jogadores para começar.</div>
             </div>
           </div>
 
           <div class="stat">
-            <h2>Win condition</h2>
-            <div class="muted">First player to earn <b>5 badges</b> wins. (Max: <b>1 badge per turn</b>.)</div>
+            <h2>Condição de vitória</h2>
+            <div class="muted">O primeiro jogador a conquistar <b>5 medalhas</b> vence. (Máx.: <b>1 medalha por turno</b>.)</div>
           </div>
 
           <div class="players" id="players"></div>
@@ -963,10 +962,10 @@
       <main class="boardShell">
         <div class="boardHeader">
           <div>
-            <h2>Board</h2>
-            <p class="muted">Scroll inside the board if needed.</p>
+            <h2>Tabuleiro</h2>
+            <p class="muted">Role dentro do tabuleiro, se necessário.</p>
           </div>
-          <div class="pill">Scroll panel and board on devices</div>
+          <div class="pill">Role painel e tabuleiro em dispositivos</div>
         </div>
 
         <div class="board" id="board"></div>
@@ -980,7 +979,7 @@
         <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-ND
           4.0</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a href="https://github.com/cometsinthesky/biodiversity-living-things-game" target="_blank"
+        <a href="https://github.com/cometsinthesky/history-battle-game" target="_blank"
           rel="noopener noreferrer">GitHub Page</a>
       </div>
     </footer>
@@ -989,42 +988,42 @@
   <!-- Start overlay -->
   <div class="startOverlay" id="startOverlay" aria-hidden="true">
     <div class="startCard">
-      <h3>Welcome to Biodiversity Battle!</h3>
-      <p>Select number of players:</p>
+      <h3>Bem-vindo(a) ao History Battle!</h3>
+      <p>Selecione o número de jogadores:</p>
       <div class="startButtons">
-        <button class="pick2" id="btnPick2">2 players</button>
-        <button class="pick3" id="btnPick3">3 players</button>
-        <button class="pick4" id="btnPick4">4 players</button>
+        <button class="pick2" id="btnPick2">2 jogadores</button>
+        <button class="pick3" id="btnPick3">3 jogadores</button>
+        <button class="pick4" id="btnPick4">4 jogadores</button>
       </div>
     </div>
   </div>
 
   <div class="turnOverlay" id="turnOverlay" aria-hidden="true">
     <div class="turnCard">
-      <h3 id="turnMsg">Player 1 it’s your turn!</h3>
-      <p>Tap “Play!” to start. Then roll the dice.</p>
-      <button class="playBtn" id="btnPlay">Play!</button>
+      <h3 id="turnMsg">Jogador 1, é a sua vez!</h3>
+      <p>Toque em “Jogar!” para começar. Depois role o dado.</p>
+      <button class="playBtn" id="btnPlay">Jogar!</button>
     </div>
   </div>
 
   <!-- Win overlay -->
   <div class="winOverlay" id="winOverlay" aria-hidden="true">
     <div class="winCard">
-      <h3 id="winTitle">Congratulations!</h3>
-      <p id="winSubtitle">You won the Biodiversity Battle!</p>
+      <h3 id="winTitle">Parabéns!</h3>
+      <p id="winSubtitle">Você venceu o History Battle!</p>
 
       <div class="scoreTable" id="scoreTable"></div>
 
-      <button id="btnCheckBoard">Check board and positions!</button>
+      <button id="btnCheckBoard">Ver tabuleiro e posições!</button>
     </div>
   </div>
 
   <!-- Bonus overlay -->
   <div class="bonusOverlay" id="bonusOverlay" aria-hidden="true">
     <div class="bonusCard">
-      <h3 id="bonusTitle">Bonus Move!</h3>
-      <p id="bonusText">Player X has 🏅 badges. Bonus: Player X moved +N tiles.</p>
-      <button class="nextturn" id="btnBonusNext">Next player turn!</button>
+      <h3 id="bonusTitle">Movimento Bônus!</h3>
+      <p id="bonusText">Jogador X tem 🏅 medalhas. Bônus: Jogador X avançou +N casas.</p>
+      <button class="nextturn" id="btnBonusNext">Próximo jogador!</button>
     </div>
   </div>
 
@@ -1032,21 +1031,21 @@
     <div class="modal">
       <div class="modalHeader">
         <div>
-          <h3 id="modalTitle">Tile</h3>
+          <h3 id="modalTitle">Casa</h3>
           <div class="muted" id="modalMeta"></div>
         </div>
       </div>
       <div class="modalBody">
         <div class="challenge" id="challengeBox"></div>
         <div class="challenge">
-          <b>Optional: quick extension</b>
+          <b>Opcional: extensão rápida</b>
           <div id="extensionBox" class="muted"></div>
         </div>
       </div>
       <div class="modalFooter">
-        <button class="danger" id="btnTryAgain">⏳ Try again, wait for next turn</button>
-        <button id="btnBadge">✅ Give current player a badge</button>
-        <button class="secondary" id="btnNewChallenge">🔁 New challenge</button>
+        <button class="danger" id="btnTryAgain">⏳ Tente de novo no próximo turno</button>
+        <button id="btnBadge">✅ Dar 1 medalha ao jogador atual</button>
+        <button class="secondary" id="btnNewChallenge">🔁 Novo desafio</button>
       </div>
     </div>
   </div>
@@ -1094,7 +1093,8 @@
       general: { border: "rgba(14,26,43,.22)", stripe: "rgba(14,26,43,.16)", a: "#1450c8", b: "#0e1a2b", bg1: "rgba(255,255,255,.92)", bg2: "rgba(255,255,255,.88)" }
     };
 
-    const SVG = {
+    // ✅ ÍCONES: NÃO ALTERADOS (apenas adicionada a associação de termos em PT para os mesmos ícones já existentes)
+    const SVG = { /* (mantido exatamente como estava no seu arquivo original) */
       startflag: (p) => `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
           <path d="M18 10v44" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
@@ -1484,7 +1484,56 @@
       "physiological adaptation": "thermo",
       "evolution": "spiral",
       "natural selection": "target",
-      "camouflage": "chameleon"
+      "camouflage": "chameleon",
+
+      // ✅ NOVAS CHAVES EM PORTUGUÊS (sem alterar os ícones)
+      "segunda revolução industrial": "city",
+      "nacionalismos europeus": "globe",
+      "tríplice aliança × tríplice entente": "link",
+      "corrida armamentista": "target",
+      "corrida naval": "waves",
+      "tensões coloniais": "globe",
+      "crises balcânicas": "scales",
+      "atentado de sarajevo": "target",
+      "primeira guerra mundial": "target",
+      "trincheiras ocidentais": "shell",
+      "batalha de verdun": "target",
+      "batalha do somme": "target",
+      "novas tecnologias bélicas": "microscope",
+      "guerra submarina": "waves",
+      "entrada dos eua": "globe",
+      "revolução russa": "spiral",
+      "tratado brest-litovsk": "tag",
+      "armistício de compiègne": "tag",
+      "período entreguerras": "puzzle",
+      "tratado versalhes": "tag",
+      "liga das nações": "network",
+      "crise de 1929": "arrows",
+      "fascismo italiano": "spine",
+      "nazismo alemão": "spine",
+      "leis raciais": "target",
+      "stalinismo soviético": "spine",
+      "rearmamento alemão": "target",
+      "política de apaziguamento": "link",
+      "guerra civil espanhola": "target",
+      "pacto germano-soviético": "link",
+      "segunda guerra mundial": "target",
+      "invasão da polônia": "target",
+      "blitzkrieg alemã": "arrows",
+      "queda da frança": "city",
+      "batalha da grã-bretanha": "target",
+      "operação barbarossa": "target",
+      "batalha de stalingrado": "target",
+      "holocausto": "target",
+      "pearl harbor": "waves",
+      "guerra do pacífico": "waves",
+      "dia d": "waves",
+      "rendição da alemanha": "tag",
+      "bombas atômicas": "atom",
+      "criação da onu": "network",
+      "julgamentos de nuremberg": "scales",
+      "guerra fria": "puzzle",
+      "descolonização global": "globe"
     };
 
     function normalizeWord(word) {
@@ -1563,27 +1612,66 @@
       return svgDataUri(maker(pal));
     }
 
+    // ✅ VOCAB EM PORTUGUÊS (Start + 47 tiles)
     const VOCAB = [
       "Start!",
-      "Atom", "DNA", "Biodiversity", "Ecosystem", "Abiotic factors", "Biotic factors", "Species", "Genetic diversity",
-      "Habitat", "Niche", "Ecosystem", "Food web", "Energy flow", "Decomposers", "Producers", "Consumers",
-      "Ecological balance", "Symbiosis", "Ecosystems: Aquatic", "Ecosystems: Forest", "Ecosystems: Grassland",
-      "Ecosystems: Desert", "Ecosystems: Marine", "Ecosystems: Freshwater", "Ecosystems: Coral reef",
-      "Ecosystems: Tundra", "Ecosystems: Urban", "Invertebrates", "Vertebrates", "Arthropods", "Mollusks",
-      "Arachnids", "Fish", "Amphibians", "Reptiles", "Birds", "Mammals",
-      "Microorganism",
-      "Microscopic life", "Microscopic organisms", "Microscopic ecosystems", "Microscopic observation",
-      "Adaptation", "Behavioral adaptation", "Physiological adaptation", "Evolution", "Natural selection"
+      "Segunda Revolução Industrial",
+      "Nacionalismos europeus",
+      "Tríplice Aliança × Tríplice Entente",
+      "Corrida armamentista",
+      "Corrida naval",
+      "Tensões coloniais",
+      "Crises balcânicas",
+      "Atentado de Sarajevo",
+      "Primeira Guerra Mundial",
+      "Trincheiras ocidentais",
+      "Batalha de Verdun",
+      "Batalha do Somme",
+      "Novas tecnologias bélicas",
+      "Guerra submarina",
+      "Entrada dos EUA",
+      "Revolução russa",
+      "Tratado Brest-Litovsk",
+      "Armistício de Compiègne",
+      "Período Entreguerras",
+      "Tratado Versalhes",
+      "Liga das Nações",
+      "Crise de 1929",
+      "Fascismo italiano",
+      "Nazismo alemão",
+      "Leis raciais",
+      "Stalinismo soviético",
+      "Rearmamento alemão",
+      "Política de apaziguamento",
+      "Guerra civil espanhola",
+      "Pacto germano-soviético",
+      "Segunda Guerra Mundial",
+      "Invasão da Polônia",
+      "Blitzkrieg alemã",
+      "Queda da França",
+      "Batalha da Grã-Bretanha",
+      "Operação Barbarossa",
+      "Batalha de Stalingrado",
+      "Holocausto",
+      "Pearl Harbor",
+      "Guerra do Pacífico",
+      "Dia D",
+      "Rendição da Alemanha",
+      "Bombas atômicas",
+      "Criação da ONU",
+      "Julgamentos de Nuremberg",
+      "Guerra Fria",
+      "Descolonização global"
     ];
 
     const BOARD_TILES = 48;
 
     // Player templates + dynamic player list (2/3/4)
     const PLAYER_TEMPLATES = [
-      { color: "#e74c3c" }, // Player 1
-      { color: "#3498db" }, // Player 2
-      { color: "#2ecc71" }, // Player 3
-      { color: "#9b59b6" }  // Player 4
+      { color: "#e74c3c" }, // Jogador 1
+      { color: "#3498db" }, // Jogador 2
+      { color: "#2ecc71" }, // Jogador 3
+      { color: "#9b59b6" }  // Jogador 4
     ];
 
     let PLAYERS = []; // built after selecting 2/3/4
@@ -1593,7 +1681,7 @@
       const count = Math.max(2, Math.min(4, Number(n) || 2));
       PLAYERS = PLAYER_TEMPLATES.slice(0, count).map((t, i) => ({
         id: i + 1,
-        name: `Player ${i + 1}`,
+        name: `Jogador ${i + 1}`,
         color: t.color,
         pos: 0,
         badges: 0
@@ -1638,25 +1726,27 @@
       return `rgba(${r},${g},${b},${alpha})`;
     }
 
+    // ✅ DESAFIOS (HISTÓRIA) – em Português
     const CHALLENGES = [
-      (word) => ({ title: "Define it", text: `In 1–2 sentences, define <b>${word}</b> in your own words.`, ext: "Give a real-life example." }),
-      (word) => ({ title: "Example vs non-example", text: `Give one example of <b>${word}</b> and one non-example. Explain why.`, ext: "If unsure, discuss and vote." }),
-      (word) => ({ title: "Draw it (quick sketch)", text: `Sketch <b>${word}</b> and label 2 parts.`, ext: "Explain your sketch in 20 seconds." }),
-      (word) => ({ title: "Use it in context", text: `Create a correct science sentence using <b>${word}</b>.`, ext: "Add one more detail to improve it." }),
-      (word) => ({ title: "Compare", text: `Compare <b>${word}</b> with another word. Similarities and differences?`, ext: "Use a Venn diagram if you want." }),
-      (word) => ({ title: "Cause & effect", text: `Describe a cause-and-effect relationship involving <b>${word}</b>.`, ext: "What happens if it changes?" })
+      (word) => ({ title: "Defina o conceito", text: `Em 1–2 frases, defina <b>${word}</b> com suas próprias palavras.`, ext: "Dê um exemplo histórico relacionado." }),
+      (word) => ({ title: "Causa e consequência", text: `Explique uma <b>causa</b> e uma <b>consequência</b> de <b>${word}</b>.`, ext: "A consequência foi imediata ou de longo prazo?" }),
+      (word) => ({ title: "Linha do tempo", text: `Coloque <b>${word}</b> em uma linha do tempo aproximada (diga o ano ou década) e cite um fato associado.`, ext: "O que veio antes e o que veio depois?" }),
+      (word) => ({ title: "Contextualize", text: `Explique <b>${word}</b> no contexto político/econômico/social da época.`, ext: "Que grupos foram mais afetados?" }),
+      (word) => ({ title: "Compare", text: `Compare <b>${word}</b> com outro tema do tabuleiro: semelhanças e diferenças.`, ext: "Use 2 critérios (político e econômico, por exemplo)." }),
+      (word) => ({ title: "Mapa mental (rápido)", text: `Faça um mini mapa mental de <b>${word}</b> com 3 palavras-chave.`, ext: "Explique suas 3 palavras em 20 segundos." })
     ];
 
-    const ECOSYSTEM_PROMPTS = [
-      "Name two biotic and two abiotic factors there.",
-      "Describe one food chain that could exist there.",
-      "Name one adaptation an animal might need to survive there."
+    const WAR_PROMPTS = [
+      "Cite um ator (país/líder) e seu interesse principal.",
+      "Explique um impacto para civis (trabalho, propaganda, migrações).",
+      "Qual foi um desdobramento no pós-guerra?"
     ];
 
     function pickChallenge(word) {
       const base = CHALLENGES[randInt(0, CHALLENGES.length - 1)](word);
-      if (word.toLowerCase().includes("ecosystems:")) {
-        base.ext = ECOSYSTEM_PROMPTS[randInt(0, ECOSYSTEM_PROMPTS.length - 1)];
+      const w = String(word || "").toLowerCase();
+      if (w.includes("guerra") || w.includes("batalha") || w.includes("invasão") || w.includes("opera")) {
+        base.ext = WAR_PROMPTS[randInt(0, WAR_PROMPTS.length - 1)];
       }
       return base;
     }
@@ -1748,13 +1838,13 @@
       if (!PLAYERS.length) {
         currentEl.textContent = "—";
         diceValEl.textContent = (lastRoll === null) ? "—" : String(lastRoll);
-        turnHintEl.textContent = "Select number of players to start.";
+        turnHintEl.textContent = "Selecione o número de jogadores para começar.";
         btnRoll.disabled = true;
         btnEndTurn.disabled = true;
         btnReset.disabled = false;
 
         btnBadge.disabled = true;
-        btnBadge.textContent = "✅ Give current player a badge";
+        btnBadge.textContent = "✅ Dar 1 medalha ao jogador atual";
         return;
       }
 
@@ -1762,9 +1852,9 @@
 
       if (gameOver) {
         if (boardCheckMode) {
-          turnHintEl.textContent = "Check board and positions. Use “Reset Game” to restart.";
+          turnHintEl.textContent = "Verifique tabuleiro e posições. Use “Reiniciar jogo” para recomeçar.";
         } else {
-          turnHintEl.textContent = "Game over. Press “Check board and positions!”";
+          turnHintEl.textContent = "Fim de jogo. Pressione “Ver tabuleiro e posições!”";
         }
         btnRoll.disabled = true;
         btnEndTurn.disabled = true;
@@ -1774,16 +1864,16 @@
         btnReset.disabled = false;
 
         if (!turnActive) {
-          turnHintEl.textContent = "Press “Play!” to start the turn.";
+          turnHintEl.textContent = "Pressione “Jogar!” para iniciar o turno.";
           btnRoll.disabled = true;
         } else {
           btnRoll.disabled = false;
-          turnHintEl.textContent = "Roll the dice.";
+          turnHintEl.textContent = "Role o dado.";
         }
       }
 
       if (waitingBonusAck && !gameOver) {
-        turnHintEl.textContent = "Bonus applied. Press “Next player turn!”";
+        turnHintEl.textContent = "Bônus aplicado. Pressione “Próximo jogador!”";
         btnRoll.disabled = true;
         btnEndTurn.disabled = true;
       }
@@ -1798,8 +1888,8 @@
 
       btnBadge.disabled = badgeAwardedThisTurn || gameOver || waitingBonusAck || boardCheckMode;
       btnBadge.textContent = badgeAwardedThisTurn
-        ? "✅ Badge already awarded this turn"
-        : "✅ Give current player a badge";
+        ? "✅ Medalha já concedida neste turno"
+        : "✅ Dar 1 medalha ao jogador atual";
     }
 
     function renderPlayers() {
@@ -1809,7 +1899,7 @@
         const msg = document.createElement("div");
         msg.className = "muted";
         msg.style.padding = "8px 2px";
-        msg.textContent = "Choose 2, 3, or 4 players to begin.";
+        msg.textContent = "Escolha 2, 3 ou 4 jogadores para iniciar.";
         playersEl.appendChild(msg);
         return;
       }
@@ -1829,7 +1919,7 @@
         const star = (idx === current && !gameOver && !boardCheckMode) ? " ⭐" : "";
         text.innerHTML = `
           <div class="playerName" style="color:${p.color}">${p.name}${star}</div>
-          <div class="playerMeta">Position: ${p.pos + 1}/${BOARD_TILES}</div>
+          <div class="playerMeta">Posição: ${p.pos + 1}/${BOARD_TILES}</div>
         `;
 
         left.appendChild(token);
@@ -1840,7 +1930,7 @@
         if (p.badges === 0) {
           const empty = document.createElement("span");
           empty.className = "badge";
-          empty.textContent = "0 badges";
+          empty.textContent = "0 medalhas";
           badges.appendChild(empty);
         } else {
           for (let i = 0; i < p.badges; i++) {
@@ -1928,15 +2018,15 @@
 
       let diceInfo = "";
       if (lastRoll !== null) {
-        diceInfo = ` Dice result: ${lastRoll} •`;
+        diceInfo = ` Resultado do dado: ${lastRoll} •`;
       }
 
       let moveInfo = "";
       if (pendingMove && pendingMove.playerIndex === current) {
-        moveInfo = ` Pending move: ${pendingMove.from + 1} → ${pendingMove.to + 1}`;
+        moveInfo = ` Movimento pendente: ${pendingMove.from + 1} → ${pendingMove.to + 1}`;
       }
 
-      modalMeta.textContent = `Tile #${i + 1} • Current: Player ${p.id} •${diceInfo}${moveInfo}`;
+      modalMeta.textContent = `Casa #${i + 1} • Atual: Jogador ${p.id} •${diceInfo}${moveInfo}`;
 
       challengeBox.innerHTML = `<b>${challenge.title}</b><div>${challenge.text}</div>`;
       extensionBox.textContent = challenge.ext;
@@ -1956,7 +2046,7 @@
       if (!PLAYERS.length) return;
       if (gameOver || waitingBonusAck || boardCheckMode) return;
       const p = PLAYERS[current];
-      turnMsg.textContent = `Player ${p.id} it’s your turn!`;
+      turnMsg.textContent = `Jogador ${p.id}, é a sua vez!`;
       turnMsg.style.color = p.color;
       turnOverlay.style.display = "flex";
       turnOverlay.setAttribute("aria-hidden", "false");
@@ -1973,17 +2063,16 @@
       const w = PLAYERS[winnerIndex];
       gameOver = true;
       waitingBonusAck = false;
-      boardCheckMode = false; // only locks after pressing "Check board..."
+      boardCheckMode = false;
 
       try {
         sfxSuccess.currentTime = 0;
         sfxSuccess.play();
       } catch (err) { }
 
-      winTitle.textContent = `Congratulations Player ${w.id}! You won the Biodiversity Battle!`;
+      winTitle.textContent = `Parabéns Jogador ${w.id}! Você venceu o History Battle!`;
       winTitle.style.color = w.color;
 
-      // hide subtitle (scoreboard comes right after)
       winSubtitle.textContent = "";
       winSubtitle.style.display = "none";
 
@@ -2002,8 +2091,8 @@
 
         const name = document.createElement("div");
         name.className = "scoreName";
-        name.textContent = `Player ${p.id}`;
-        name.style.color = p.color; // ✅ nome com a cor do jogador
+        name.textContent = `Jogador ${p.id}`;
+        name.style.color = p.color;
 
         left.appendChild(dot);
         left.appendChild(name);
@@ -2015,12 +2104,10 @@
         row.appendChild(left);
         row.appendChild(badges);
 
-        // glow for EVERY player row
         row.style.setProperty("--rowBorder", hexToRgba(p.color, 0.35));
         row.style.setProperty("--rowGlow", hexToRgba(p.color, 0.18));
         row.style.setProperty("--rowGlowSoft", hexToRgba(p.color, 0.12));
 
-        // stronger glow for winner
         if (p.id === w.id) {
           row.classList.add("isWinner");
           row.style.setProperty("--winBorder", hexToRgba(p.color, 0.50));
@@ -2055,11 +2142,11 @@
 
       waitingBonusAck = true;
 
-      bonusTitle.textContent = "Bonus Move!";
+      bonusTitle.textContent = "Movimento Bônus!";
       bonusTitle.style.color = p.color;
 
       const badgeStr = (badges > 0) ? "🏅".repeat(badges) : "—";
-      bonusText.textContent = `${p.name} has ${badgeStr} badges. Bonus: ${p.name} moved +${bonusTiles} tiles.`;
+      bonusText.textContent = `${p.name} tem ${badgeStr} medalhas. Bônus: ${p.name} avançou +${bonusTiles} casas.`;
 
       bonusOverlay.style.display = "flex";
       bonusOverlay.setAttribute("aria-hidden", "false");
@@ -2155,9 +2242,8 @@
       waitingBonusAck = false;
       boardCheckMode = false;
 
-      // restore subtitle defaults (safe)
       winSubtitle.style.display = "";
-      winSubtitle.textContent = "You won the Biodiversity Battle!";
+      winSubtitle.textContent = "Você venceu o History Battle!";
 
       updateHeader();
       renderPlayers();
@@ -2251,7 +2337,6 @@
       if (!PLAYERS.length) return showStartOverlay();
       if (!gameOver) return;
 
-      // enter inspection mode: disable everything except Reset Game
       boardCheckMode = true;
 
       hideWinOverlay();
