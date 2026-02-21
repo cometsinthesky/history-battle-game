@@ -1,0 +1,2296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+
+  <title>Biodiversity Battle Online Board Game</title>
+  <meta name="description"
+    content="Biodiversity Battle is a free online board game for Science classes. Play, learn key biology terms, and earn badges. Created by Lucas Ferreira." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://cometsinthesky.github.io/biodiversity-battle-game/" />
+
+  <!-- Social Preview, Open Graph for Facebook, LinkedIn, etc. -->
+  <meta property="og:title" content="Biodiversity Battle Online Board Game" />
+  <meta property="og:description"
+    content="Free online board game for Science lessons about biodiversity, ecosystems, and biology." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cometsinthesky.github.io/biodiversity-battle-game/" />
+  <meta property="og:image"
+    content="https://cometsinthesky.github.io/biodiversity-battle-game/images/biodiversity-battle-og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- FAVICON -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./image-icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./image-icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./image-icons/favicon-16x16.png">
+  <link rel="manifest" href="./image-icons/site.webmanifest">
+
+  <style>
+    :root {
+      --card: rgba(255, 255, 255, .88);
+      --card-strong: rgba(255, 255, 255, .95);
+      --ink: #0e1a2b;
+      --muted: rgba(14, 26, 43, .65);
+      --shadow: 0 10px 30px rgba(0, 0, 0, .18);
+      --radius: 18px;
+
+      --page-pad: clamp(12px, 2.2vw, 26px);
+
+      --gap: clamp(8px, 1.2vw, 14px);
+      --btn-font: clamp(12px, 1.2vw, 15px);
+      --btn-pad-y: clamp(10px, 1.1vw, 14px);
+      --btn-pad-x: clamp(12px, 1.2vw, 16px);
+
+      --title-font: clamp(14px, 1.4vw, 18px);
+      --small-font: clamp(11px, 1.1vw, 13px);
+
+      --tile-min-h: clamp(70px, 9vh, 96px);
+      --tile-title: clamp(10px, 1.0vw, 12px);
+
+      --icon-size: clamp(16px, 2.2vw, 28px);
+      --grid-gap: clamp(8px, 1vw, 12px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background: #eaf1ff;
+      overflow: hidden;
+      position: relative;
+      touch-action: manipulation;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("https://commons.wikimedia.org/wiki/Special:FilePath/The_Science_Laboratory.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: .50;
+      filter: saturate(1.05) contrast(1.05);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(255, 255, 255, .60), rgba(255, 255, 255, .10) 55%, rgba(255, 255, 255, .35));
+      z-index: -1;
+    }
+
+    .page {
+      height: 100vh;
+      padding: max(var(--page-pad), env(safe-area-inset-top)) max(var(--page-pad), env(safe-area-inset-right)) max(var(--page-pad), env(safe-area-inset-bottom)) max(var(--page-pad), env(safe-area-inset-left));
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      min-height: 0;
+    }
+
+    .wrap {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      gap: var(--gap);
+      grid-template-columns: minmax(300px, 420px) 1fr;
+    }
+
+    @media (max-width: 980px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel,
+    .boardShell {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, .45);
+      backdrop-filter: blur(6px);
+      min-height: 0;
+    }
+
+    .panel {
+      padding: clamp(10px, 1.2vw, 14px);
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      background: var(--card-strong);
+      border: 1px solid rgba(0, 0, 0, .06);
+      flex-wrap: nowrap;      /* NÃO deixa quebrar linha */
+      gap: 2px;              /* espaço entre título e logo */
+    }
+
+    .brandLeft{
+      min-width: 0;           /* permite encolher sem quebrar */
+      flex: 1 1 auto;         /* título ocupa o espaço disponível */
+    }
+
+    .brandLogo{
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      flex: 0 0 200px;        /* logo fixa e sempre à direita */
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: var(--title-font);
+      line-height: 1.2;
+      letter-spacing: .2px;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: var(--small-font);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(14, 26, 43, .08);
+      font-size: var(--small-font);
+      color: rgba(14, 26, 43, .85);
+      white-space: nowrap;
+    }
+
+    .controls {
+      display: grid;
+      gap: var(--gap);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 14px;
+      padding: var(--btn-pad-y) var(--btn-pad-x);
+      cursor: pointer;
+      font-weight: 900;
+      font-size: var(--btn-font);
+      color: white;
+      background: rgba(20, 80, 200, .92);
+      box-shadow: 0 8px 18px rgba(20, 80, 200, .22);
+      transition: transform .06s ease, filter .15s ease;
+      min-height: 44px;
+      min-width: 44px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:hover {
+      filter: brightness(1.03);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      box-shadow: none;
+      filter: grayscale(.15);
+    }
+
+    button.secondary {
+      background: rgba(14, 26, 43, .86);
+      box-shadow: 0 8px 18px rgba(14, 26, 43, .20);
+    }
+    button.secondary:hover{ filter: brightness(1.03); }
+
+
+    button.nextturn{
+      background: rgba(37, 182, 80, 0.9);
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+    }
+    button.nextturn:hover{ filter: brightness(1.03); }
+
+    button.ghost {
+      background: rgba(255, 255, 255, .80);
+      color: rgba(14, 26, 43, .92);
+      border: 3px solid var(--cat-border, rgba(0, 0, 0, .10));
+      box-shadow: none;
+    }
+
+    button.danger {
+      background: rgba(231, 76, 60, .95);
+      box-shadow: 0 8px 18px rgba(231, 76, 60, .22);
+    }
+
+    button.danger:hover {
+      filter: brightness(1.03);
+    }
+
+    /* green play again button (kept, but not used anymore) */
+    button.success {
+      background: rgba(46, 204, 113, .95);
+      box-shadow: 0 10px 22px rgba(46, 204, 113, .22);
+    }
+
+    button.success:hover {
+      filter: brightness(1.03);
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(0, 0, 0, .08);
+      border-radius: 14px;
+      padding: 10px;
+      flex: 1 1 180px;
+      min-width: 160px;
+    }
+
+    .stat h2 {
+      margin: 0 0 6px;
+      font-size: clamp(12px, 1.2vw, 14px);
+      color: rgba(14, 26, 43, .85);
+    }
+
+    .big {
+      font-size: clamp(24px, 3.2vw, 34px);
+      font-weight: 1000;
+      letter-spacing: .5px;
+      line-height: 1;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: var(--small-font);
+    }
+
+    .players {
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-right: 2px;
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+
+    .playerCard {
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(0, 0, 0, .08);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .playerLeft {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .token {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .8);
+      flex: 0 0 auto;
+    }
+
+    .playerName {
+      font-weight: 1000;
+      font-size: clamp(12px, 1.2vw, 14px);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playerMeta {
+      font-size: clamp(11px, 1.1vw, 12px);
+      color: var(--muted);
+    }
+
+    .badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+      max-width: 160px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(14, 26, 43, .08);
+      color: rgba(14, 26, 43, .85);
+      border: 1px solid rgba(0, 0, 0, .06);
+    }
+
+    .boardShell {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .boardHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 8px 10px 10px;
+      flex: 0 0 auto;
+    }
+
+    .boardHeader h2 {
+      margin: 0;
+      font-size: clamp(13px, 1.3vw, 16px);
+    }
+
+    .boardHeader .muted {
+      margin: 0;
+    }
+
+    .board {
+      flex: 1 1 auto;
+      min-height: 0;
+
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)),
+        url("images/board-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-blend-mode: normal;
+
+      border: 3px solid var(--cat-border, rgba(0, 0, 0, .10));
+      border-radius: 16px;
+      padding: 12px;
+      display: grid;
+      gap: var(--grid-gap);
+
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    @media (min-width: 1200px) {
+      .board {
+        grid-template-columns: repeat(8, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) and (max-width: 1199px) {
+      .board {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+
+    @media (min-width: 650px) and (max-width: 899px) {
+      .board {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    @media (max-width: 649px) {
+      .board {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 520px){
+      .brand{
+        flex-direction: row;      /* mantém na mesma linha */
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;        /* não quebra */
+      }
+
+      .brandLeft{
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .brandLogo{
+        width: 80px;
+        height: 80px;
+        flex: 0 0 80px;           /* fixa a logo à direita */
+        object-fit: contain;
+      }
+    }
+
+    .tile {
+      position: relative;
+      border-radius: 14px;
+      padding: 10px 10px 8px;
+      background: var(--cat-bg, rgba(255, 255, 255, .90));
+      border: 3px solid var(--cat-border, rgba(0, 0, 0, .10));
+      cursor: pointer;
+      min-height: var(--tile-min-h);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .06s ease, filter .15s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      overflow: hidden;
+    }
+
+    .tile:hover {
+      filter: brightness(1.02);
+      transform: translateY(-1px);
+    }
+
+    .tile:active {
+      transform: translateY(0px);
+    }
+
+    .tileTop {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .icon {
+      width: var(--icon-size);
+      height: var(--icon-size);
+      flex: 0 0 auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .12));
+    }
+
+    .tileTitle {
+      font-weight: 950;
+      font-size: var(--tile-title);
+      line-height: 1.15;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .tileMeta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: clamp(10px, 1.0vw, 11px);
+      color: var(--muted);
+    }
+
+    .tileIndex {
+      font-weight: 900;
+      color: rgba(14, 26, 43, .55);
+    }
+
+    .occupants {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: 80%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 6px;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .85), 0 2px 8px rgba(0, 0, 0, .12);
+    }
+
+    .tile::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 8px;
+      background: var(--cat-stripe, rgba(14, 26, 43, .10));
+      opacity: .85;
+      pointer-events: none;
+    }
+
+    .tileTop {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tileMeta {
+      position: relative;
+      z-index: 1;
+    }
+
+    .occupants {
+      z-index: 2;
+    }
+
+    .modalBackdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .42);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 50;
+      touch-action: none;
+    }
+
+    .modal {
+      width: min(820px, 100%);
+      max-height: min(82vh, 780px);
+      background: rgba(255, 255, 255, .96);
+      border-radius: 18px;
+      border: 1px solid rgba(0, 0, 0, .12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modalHeader {
+      padding: 14px 16px;
+      background: rgba(14, 26, 43, .06);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .modalHeader h3 {
+      margin: 0;
+      font-size: clamp(14px, 1.4vw, 16px);
+      line-height: 1.25;
+    }
+
+    .modalBody {
+      padding: 14px 16px 16px;
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1 1 auto;
+    }
+
+    .challenge {
+      background: rgba(255, 255, 255, .95);
+      border: 3px solid var(--cat-border, rgba(0, 0, 0, .10));
+      border-radius: 14px;
+      padding: 12px;
+      font-size: clamp(12px, 1.3vw, 14px);
+    }
+
+    .challenge b {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .modalFooter {
+      padding: 12px 16px 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex: 0 0 auto;
+    }
+
+    .turnOverlay,
+    .winOverlay,
+    .startOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 60;
+      background: rgba(0, 0, 0, .50);
+    }
+
+    .turnCard,
+    .winCard,
+    .startCard {
+      width: min(560px, 100%);
+      background: rgba(255, 255, 255, .96);
+      border-radius: 18px;
+      border: 1px solid rgba(0, 0, 0, .12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .28);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .startCard h3,
+    .turnCard h3,
+    .winCard h3 {
+      margin: 0 0 8px;
+      font-size: clamp(18px, 2.4vw, 22px);
+      line-height: 1.2;
+      font-weight: 1000;
+    }
+
+    .startCard p,
+    .turnCard p,
+    .winCard p {
+      margin: 0 0 14px;
+      color: rgba(14, 26, 43, .70);
+      font-size: var(--small-font);
+      line-height: 1.35;
+    }
+
+    .startButtons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .startButtons button {
+      width: 100%;
+      font-size: clamp(14px, 1.6vw, 16px);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+
+    /* Start selection colors */
+    button.pick2{
+      background: rgba(244, 180, 0, .95);
+      color: #fff; /* texto branco */
+      box-shadow: 0 10px 22px rgba(244, 180, 0, .22);
+    }
+
+    button.pick3 {
+      background: rgba(46, 204, 113, .95);
+      box-shadow: 0 10px 22px rgba(46, 204, 113, .22);
+    }
+
+    button.pick4 {
+      background: rgba(52, 152, 219, .95);
+      box-shadow: 0 10px 22px rgba(52, 152, 219, .22);
+    }
+
+    .turnCard .playBtn {
+      width: 100%;
+      font-size: clamp(14px, 1.6vw, 16px);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+
+    /* win overlay scoreboard */
+    .scoreTable {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0 14px;
+      text-align: left;
+    }
+
+    .scoreRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .88);
+      border: 2px solid rgba(0, 0, 0, .08);
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    }
+
+    .scoreLeft {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .scoreDot {
+      width: 14px;
+      height: 14px;
+      border-radius: 5px;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .85), 0 2px 8px rgba(0, 0, 0, .10);
+      flex: 0 0 auto;
+    }
+
+    .scoreName {
+      font-weight: 950;
+      font-size: clamp(13px, 1.3vw, 15px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .scoreBadges {
+      font-size: clamp(14px, 1.6vw, 16px);
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 62%;
+      text-align: right;
+    }
+
+    /* NEW: glow per player row (everyone gets their own color glow) */
+    .scoreRow.glowRow {
+      border-color: var(--rowBorder, rgba(0, 0, 0, .10));
+      box-shadow:
+        0 0 0 3px var(--rowGlow, rgba(20, 80, 200, .12)),
+        0 0 22px var(--rowGlowSoft, rgba(20, 80, 200, .08)),
+        0 16px 40px rgba(0, 0, 0, .08);
+    }
+
+    /* Winner gets a stronger glow */
+    .scoreRow.isWinner {
+      border-color: var(--winBorder, rgba(20, 80, 200, .35));
+      box-shadow:
+        0 0 0 4px var(--winGlow, rgba(20, 80, 200, .22)),
+        0 0 30px var(--winGlowSoft, rgba(20, 80, 200, .14)),
+        0 18px 45px rgba(0, 0, 0, .10);
+      transform: translateY(-1px);
+    }
+
+    /* NEW: bonus overlay */
+    .bonusOverlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 65;
+      background: rgba(0, 0, 0, .50);
+    }
+
+    .bonusCard {
+      width: min(560px, 100%);
+      background: rgba(255, 255, 255, .96);
+      border-radius: 18px;
+      border: 1px solid rgba(0, 0, 0, .12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .28);
+      padding: 18px;
+      text-align: center;
+    }
+
+    .bonusCard h3 {
+      margin: 0 0 8px;
+      font-size: clamp(18px, 2.4vw, 22px);
+      line-height: 1.2;
+      font-weight: 1000;
+    }
+
+    .bonusCard p {
+      margin: 0 0 14px;
+      color: rgba(14, 26, 43, .70);
+      font-size: var(--small-font);
+      line-height: 1.35;
+    }
+
+    .bonusCard button {
+      width: 100%;
+      font-size: clamp(14px, 1.6vw, 16px);
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+
+    footer {
+      flex: 0 0 auto;
+      background: rgba(255, 255, 255, .70);
+      border: 1px solid rgba(0, 0, 0, .07);
+      border-radius: 12px;
+      padding: 6px 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+      backdrop-filter: blur(6px);
+      font-size: 9px;
+      color: rgba(14, 26, 43, .80);
+      line-height: 1.2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    footer a {
+      color: rgba(20, 80, 200, .95);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    footer .footerLine {
+      max-width: 100%;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      word-break: break-word;
+    }
+
+    @media (max-width: 980px) {
+      .wrap {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(240px, 46vh) minmax(0, 1fr);
+      }
+
+      .panel {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+
+      .controls {
+        overflow: visible;
+      }
+
+      .players {
+        overflow: visible;
+      }
+
+      .board {
+        overflow: auto;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .wrap {
+        grid-template-rows: minmax(240px, 52vh) minmax(0, 1fr);
+      }
+
+      .scoreBadges {
+        max-width: 56%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="wrap">
+      <aside class="panel">
+        <div class="brand">
+          <div>
+            <h1>Biodiversity Battle</h1>
+            <h1>Board Game 🧬</h1>
+            <p>Roll → Answer → Check</p>
+          </div>
+          <img
+              class="brandLogo"
+              src="./images/biodiversity-battle-logo.png"
+              width="110"
+              height="110"
+              alt="Biodiversity Battle logo"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+
+        <div class="controls">
+          <div class="row">
+            <button id="btnRoll">🎲 Roll Dice</button>
+            <button class="secondary" id="btnEndTurn">End Turn →</button>
+            <button class="ghost" id="btnReset">Reset Game</button>
+          </div>
+
+          <div class="row">
+            <div class="stat">
+              <h2>Dice</h2>
+              <div class="big" id="diceVal">—</div>
+              <div class="muted" id="diceHint">Roll 1–6 (movement applies only if badge is awarded)</div>
+            </div>
+            <div class="stat">
+              <h2>Current Player</h2>
+              <div class="big" id="currentPlayer">—</div>
+              <div class="muted" id="turnHint">Select number of players to start.</div>
+            </div>
+          </div>
+
+          <div class="stat">
+            <h2>Win condition</h2>
+            <div class="muted">First player to earn <b>5 badges</b> wins. (Max: <b>1 badge per turn</b>.)</div>
+          </div>
+
+          <div class="players" id="players"></div>
+        </div>
+      </aside>
+
+      <main class="boardShell">
+        <div class="boardHeader">
+          <div>
+            <h2>Board</h2>
+            <p class="muted">Scroll inside the board if needed.</p>
+          </div>
+          <div class="pill">Scroll panel and board on devices</div>
+        </div>
+
+        <div class="board" id="board"></div>
+      </main>
+    </div>
+
+    <footer>
+      <div class="footerLine">
+        Created by Lucas Ferreira (MSc. Physics Education, PhD student Science Education (UnB/IF/PPGEduC)
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-ND
+          4.0</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a href="https://github.com/cometsinthesky/biodiversity-living-things-game" target="_blank"
+          rel="noopener noreferrer">GitHub Page</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Start overlay -->
+  <div class="startOverlay" id="startOverlay" aria-hidden="true">
+    <div class="startCard">
+      <h3>Welcome to Biodiversity Battle!</h3>
+      <p>Select number of players:</p>
+      <div class="startButtons">
+        <button class="pick2" id="btnPick2">2 players</button>
+        <button class="pick3" id="btnPick3">3 players</button>
+        <button class="pick4" id="btnPick4">4 players</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="turnOverlay" id="turnOverlay" aria-hidden="true">
+    <div class="turnCard">
+      <h3 id="turnMsg">Player 1 it’s your turn!</h3>
+      <p>Tap “Play!” to start. Then roll the dice.</p>
+      <button class="playBtn" id="btnPlay">Play!</button>
+    </div>
+  </div>
+
+  <!-- Win overlay -->
+  <div class="winOverlay" id="winOverlay" aria-hidden="true">
+    <div class="winCard">
+      <h3 id="winTitle">Congratulations!</h3>
+      <p id="winSubtitle">You won the Biodiversity Battle!</p>
+
+      <div class="scoreTable" id="scoreTable"></div>
+
+      <button id="btnCheckBoard">Check board and positions!</button>
+    </div>
+  </div>
+
+  <!-- Bonus overlay -->
+  <div class="bonusOverlay" id="bonusOverlay" aria-hidden="true">
+    <div class="bonusCard">
+      <h3 id="bonusTitle">Bonus Move!</h3>
+      <p id="bonusText">Player X has 🏅 badges. Bonus: Player X moved +N tiles.</p>
+      <button class="nextturn" id="btnBonusNext">Next player turn!</button>
+    </div>
+  </div>
+
+  <div class="modalBackdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modalHeader">
+        <div>
+          <h3 id="modalTitle">Tile</h3>
+          <div class="muted" id="modalMeta"></div>
+        </div>
+      </div>
+      <div class="modalBody">
+        <div class="challenge" id="challengeBox"></div>
+        <div class="challenge">
+          <b>Optional: quick extension</b>
+          <div id="extensionBox" class="muted"></div>
+        </div>
+      </div>
+      <div class="modalFooter">
+        <button class="danger" id="btnTryAgain">⏳ Try again, wait for next turn</button>
+        <button id="btnBadge">✅ Give current player a badge</button>
+        <button class="secondary" id="btnNewChallenge">🔁 New challenge</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ SFX (expects /sfx/*.mp3 in your project)
+    const sfxDice = new Audio("sfx/dice-roll.mp3");
+    sfxDice.preload = "auto";
+
+    const sfxSuccess = new Audio("sfx/success.mp3");
+    sfxSuccess.preload = "auto";
+
+    const sfxWin = new Audio("sfx/win.mp3");
+    sfxWin.preload = "auto";
+
+    const sfxFail = new Audio("sfx/fail.mp3");
+    sfxFail.preload = "auto";
+
+    const CATEGORY = {
+      // Start tile palette (pure white)
+      start: {
+        border: "rgba(0,0,0,.09)",
+        stripe: "rgba(0,0,0,.09)",
+        a: "#2d2d2d",
+        b: "#6b6b6b",
+        bg1: "rgba(255,255,255,1)",
+        bg2: "rgba(255,255,255,1)"
+      },
+
+      ecosystems: { border: "#0b84a5", stripe: "#34a853", a: "#0b84a5", b: "#2ecc71", bg1: "rgba(11,132,165,.13)", bg2: "rgba(46,204,113,.10)" },
+      eco_aquatic: { border: "#1e63ff", stripe: "#0b3d91", a: "#1e63ff", b: "#5aa7ff", bg1: "rgba(30,99,255,.13)", bg2: "rgba(90,167,255,.10)" },
+      eco_forest: { border: "#1b5e20", stripe: "#0f3d14", a: "#1b5e20", b: "#43a047", bg1: "rgba(27,94,32,.13)", bg2: "rgba(67,160,71,.10)" },
+      eco_grassland: { border: "#7cb342", stripe: "#558b2f", a: "#7cb342", b: "#aed581", bg1: "rgba(124,179,66,.13)", bg2: "rgba(174,213,129,.10)" },
+      eco_desert: { border: "#f4b400", stripe: "#c88700", a: "#f4b400", b: "#ffd54f", bg1: "rgba(244,180,0,.13)", bg2: "rgba(255,213,79,.10)" },
+      eco_marine: { border: "#00bfa5", stripe: "#00897b", a: "#00bfa5", b: "#4dd0e1", bg1: "rgba(0,191,165,.13)", bg2: "rgba(77,208,225,.10)" },
+      eco_freshwater: { border: "#63c7ff", stripe: "#2196f3", a: "#63c7ff", b: "#bbdefb", bg1: "rgba(99,199,255,.13)", bg2: "rgba(187,222,251,.10)" },
+      eco_coralreef: { border: "#00e5ff", stripe: "#00b8d4", a: "#00e5ff", b: "#18ffff", bg1: "rgba(0,229,255,.13)", bg2: "rgba(24,255,255,.10)" },
+      eco_tundra: { border: "#ff8f00", stripe: "#ef6c00", a: "#ff8f00", b: "#ffcc80", bg1: "rgba(255,143,0,.13)", bg2: "rgba(255,204,128,.10)" },
+      eco_urban: { border: "#757575", stripe: "#424242", a: "#757575", b: "#bdbdbd", bg1: "rgba(117,117,117,.13)", bg2: "rgba(189,189,189,.10)" },
+      animals: { border: "#f39c12", stripe: "#e67e22", a: "#f39c12", b: "#e67e22", bg1: "rgba(243,156,18,.14)", bg2: "rgba(230,126,34,.10)" },
+      micro: { border: "#8e44ad", stripe: "#9b59b6", a: "#8e44ad", b: "#9b59b6", bg1: "rgba(142,68,173,.14)", bg2: "rgba(155,89,182,.10)" },
+      genetics: { border: "#16a085", stripe: "#2bbbad", a: "#16a085", b: "#2bbbad", bg1: "rgba(22,160,133,.14)", bg2: "rgba(43,187,173,.10)" },
+      ecology: { border: "#2ecc71", stripe: "#34a853", a: "#2ecc71", b: "#34a853", bg1: "rgba(46,204,113,.14)", bg2: "rgba(52,168,83,.10)" },
+      evolution: { border: "#c0392b", stripe: "#e74c3c", a: "#c0392b", b: "#e74c3c", bg1: "rgba(192,57,43,.14)", bg2: "rgba(231,76,60,.10)" },
+      general: { border: "rgba(14,26,43,.22)", stripe: "rgba(14,26,43,.16)", a: "#1450c8", b: "#0e1a2b", bg1: "rgba(255,255,255,.92)", bg2: "rgba(255,255,255,.88)" }
+    };
+
+    const SVG = {
+      startflag: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 10v44" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M18 12h26l-6 8 6 8H18z"
+                fill="rgba(255,255,255,.85)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <g stroke="rgba(14,26,43,.70)" stroke-width="2" stroke-linecap="round">
+            <path d="M22 16h6M22 20h6M22 24h6"/>
+            <path d="M32 16h6M32 20h6M32 24h6"/>
+          </g>
+          <path d="M26 50h24" fill="none" stroke="${p.b}" stroke-width="3" stroke-linecap="round"/>
+          <path d="M44 50l6-4-6-4" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`,
+      atom: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="32" cy="32" rx="22" ry="10" transform="rotate(20 32 32)"/>
+            <ellipse cx="32" cy="32" rx="22" ry="10" transform="rotate(-20 32 32)"/>
+            <ellipse cx="32" cy="32" rx="22" ry="10" transform="rotate(90 32 32)"/>
+          </g>
+          <circle cx="32" cy="32" r="6" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="46" cy="22" r="3" fill="${p.b}"/>
+        </svg>`,
+      dna: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M20 10c10 8 14 14 14 22s-4 14-14 22" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M44 10c-10 8-14 14-14 22s4 14 14 22" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <g stroke="rgba(14,26,43,.72)" stroke-width="3" stroke-linecap="round">
+            <line x1="24" y1="18" x2="40" y2="18"/>
+            <line x1="22" y1="26" x2="42" y2="26"/>
+            <line x1="22" y1="34" x2="42" y2="34"/>
+            <line x1="24" y1="42" x2="40" y2="42"/>
+            <line x1="26" y1="50" x2="38" y2="50"/>
+          </g>
+          <circle cx="20" cy="10" r="3" fill="${p.a}"/>
+          <circle cx="44" cy="54" r="3" fill="${p.b}"/>
+        </svg>`,
+      leaf: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M50 12C34 14 18 26 14 42c-2 9 6 14 14 10 16-8 26-24 22-40z" fill="rgba(46,204,113,.20)" stroke="rgba(14,26,43,.82)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M20 46c10-12 18-18 28-24" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      globe: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="22" fill="rgba(11,132,165,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <path d="M10 32h44" stroke="rgba(14,26,43,.60)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M32 10c8 8 8 36 0 44M32 10c-8 8-8 36 0 44" stroke="rgba(14,26,43,.60)" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M18 20c8 4 20 4 28 0M18 44c8-4 20-4 28 0" stroke="${p.a}" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </svg>`,
+      sunrock: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round">
+            <circle cx="20" cy="20" r="8" fill="rgba(243,156,18,.20)"/>
+            <line x1="20" y1="6" x2="20" y2="10"/><line x1="20" y1="30" x2="20" y2="34"/>
+            <line x1="6" y1="20" x2="10" y2="20"/><line x1="30" y1="20" x2="34" y2="20"/>
+            <line x1="10" y1="10" x2="13" y2="13"/><line x1="27" y1="27" x2="30" y2="30"/>
+            <line x1="10" y1="30" x2="13" y2="27"/><line x1="27" y1="13" x2="30" y2="10"/>
+          </g>
+          <path d="M26 50l8-14h18l6 14H26z" fill="rgba(14,26,43,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M34 36l10 14" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      pawleaf: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g fill="rgba(243,156,18,.20)" stroke="rgba(14,26,43,.86)" stroke-width="3">
+            <circle cx="20" cy="24" r="5"/><circle cx="30" cy="18" r="5"/><circle cx="40" cy="24" r="5"/><circle cx="28" cy="44" r="10"/>
+          </g>
+          <path d="M46 46c6-8 8-16 6-26-10 2-18 8-22 16" fill="rgba(46,204,113,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M34 40c4-4 8-8 14-12" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      house: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M14 30l18-16 18 16" fill="rgba(11,132,165,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M20 28v24h24V28" fill="rgba(255,255,255,.40)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M30 52V38h8v14" fill="rgba(52,168,83,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="46" cy="38" r="3" fill="${p.a}"/>
+        </svg>`,
+      puzzle: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 22h10c-2-6 8-8 10-2 2 6-4 8-6 8v6h6c0-2 2-6 8-6s8 6 6 10-8 6-10 2H34v10H18V22z"
+            fill="rgba(155,89,182,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M22 44h10" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      network: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g stroke="rgba(14,26,43,.78)" stroke-width="3" stroke-linecap="round" fill="none">
+            <line x1="20" y1="20" x2="44" y2="20"/><line x1="20" y1="20" x2="32" y2="44"/><line x1="44" y1="20" x2="32" y2="44"/>
+            <line x1="20" y1="20" x2="18" y2="46"/><line x1="44" y1="20" x2="46" y2="46"/>
+            <line x1="18" y1="46" x2="32" y2="44"/><line x1="46" y1="46" x2="32" y2="44"/>
+          </g>
+          <g fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3">
+            <circle cx="20" cy="20" r="5"/><circle cx="44" cy="20" r="5"/><circle cx="32" cy="44" r="5"/>
+            <circle cx="18" cy="46" r="4"/><circle cx="46" cy="46" r="4"/>
+          </g>
+        </svg>`,
+      arrows: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 44c0-16 10-26 26-26" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 14l6 4-4 6" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M46 20c0 16-10 26-26 26" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M24 50l-6-4 4-6" fill="none" stroke="${p.b}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`,
+      mushroom: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M16 30c2-12 12-18 16-18s14 6 16 18H16z" fill="rgba(142,68,173,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M26 30v16c0 6 12 6 12 0V30" fill="rgba(255,255,255,.40)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="26" cy="24" r="3" fill="${p.a}"/>
+          <circle cx="38" cy="22" r="2.5" fill="${p.b}"/>
+        </svg>`,
+      plant: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 54V26" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M32 34c-10 0-16-6-18-14 10-2 18 4 18 14z" fill="rgba(46,204,113,.20)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M32 38c10 0 16-6 18-14-10-2-18 4-18 14z" fill="rgba(52,168,83,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="32" cy="24" r="4" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+        </svg>`,
+      mouth: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M16 34c6 10 26 10 32 0" fill="rgba(243,156,18,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M20 32c8 6 16 6 24 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="24" cy="28" r="2.5" fill="rgba(14,26,43,.75)"/>
+          <circle cx="40" cy="28" r="2.5" fill="rgba(14,26,43,.75)"/>
+        </svg>`,
+      scales: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 14v36" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M18 22h28" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M18 22l-8 14h16l-8-14z" fill="rgba(11,132,165,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M46 22l-8 14h16l-8-14z" fill="rgba(52,168,83,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M22 52h20" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      link: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M24 34l-6 6a10 10 0 0 0 14 14l6-6" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 30l6-6a10 10 0 0 0-14-14l-6 6" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M26 38l12-12" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      waves: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M10 40c6 6 12 6 18 0s12-6 18 0 12 6 18 0" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M10 50c6 6 12 6 18 0s12-6 18 0 12 6 18 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="18" cy="26" r="5" fill="rgba(11,132,165,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+        </svg>`,
+      tree: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 10c-10 6-16 16-16 24 0 8 6 12 16 12s16-4 16-12c0-8-6-18-16-24z" fill="rgba(52,168,83,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M28 46v10h8V46" fill="rgba(14,26,43,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M24 30c4 2 12 2 16 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      grass: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round">
+            <path d="M18 52c4-10 4-18 0-30"/><path d="M26 52c6-12 8-22 6-34"/>
+            <path d="M34 52c2-12 0-22-6-34"/><path d="M42 52c4-10 10-18 18-26"/>
+          </g>
+          <path d="M14 52h36" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      cactus: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M30 54V28c0-6-6-10-12-8v10c0 4-6 4-6 0V16c0-8 18-10 18 6v4" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M34 54V24c0-10 18-8 18 2v12c0 4-6 4-6 0V28c-6-2-12 2-12 8v18" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="22" cy="26" r="3" fill="${p.a}"/>
+          <circle cx="44" cy="32" r="3" fill="${p.b}"/>
+        </svg>`,
+      city: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M14 54V28l12-6v32H14zM26 54V18l12-6v42H26zM38 54V30l12-6v30H38z"
+            fill="rgba(14,26,43,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <g fill="${p.a}">
+            <rect x="18" y="34" width="4" height="4"/><rect x="18" y="42" width="4" height="4"/>
+            <rect x="30" y="26" width="4" height="4"/><rect x="30" y="34" width="4" height="4"/><rect x="30" y="42" width="4" height="4"/>
+            <rect x="42" y="36" width="4" height="4"/><rect x="42" y="44" width="4" height="4"/>
+          </g>
+        </svg>`,
+      bug: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <ellipse cx="32" cy="36" rx="12" ry="14" fill="rgba(243,156,18,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="32" cy="20" r="8" fill="rgba(243,156,18,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <path d="M20 32l-8-6M44 32l8-6M20 42l-10 0M44 42l10 0M24 50l-8 6M40 50l8 6" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M28 18l-8-8M36 18l8-8" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      spider: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g fill="rgba(243,156,18,.16)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="32" cy="34" r="10"/>
+            <circle cx="32" cy="22" r="6"/>
+          </g>
+          <g stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round">
+            <path d="M22 30l-10-6"/><path d="M22 34l-12 0"/><path d="M22 38l-10 6"/>
+            <path d="M42 30l10-6"/><path d="M42 34l12 0"/><path d="M42 38l10 6"/>
+          </g>
+          <g fill="${p.a}">
+            <circle cx="29" cy="21" r="1.6"/><circle cx="35" cy="21" r="1.6"/>
+          </g>
+          <path d="M28 26c4 3 8 3 12 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      spine: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 10v44" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <g fill="rgba(243,156,18,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3">
+            <rect x="26" y="14" width="12" height="6" rx="3"/><rect x="26" y="24" width="12" height="6" rx="3"/>
+            <rect x="26" y="34" width="12" height="6" rx="3"/><rect x="26" y="44" width="12" height="6" rx="3"/>
+          </g>
+          <circle cx="32" cy="54" r="4" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+        </svg>`,
+      shell: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 46c0-18 12-30 26-30 10 0 18 8 18 18 0 10-8 18-18 18H18z"
+            fill="rgba(243,156,18,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M26 46c0-12 8-22 18-22" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <path d="M34 46c0-8 4-14 10-14" fill="none" stroke="${p.b}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      fish: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M20 32c8-10 22-10 30 0-8 10-22 10-30 0z" fill="rgba(11,132,165,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M20 32l-10-8v16l10-8z" fill="rgba(11,132,165,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="40" cy="30" r="3" fill="rgba(14,26,43,.75)"/>
+          <path d="M32 34c4 2 8 2 12 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      frog: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 40c2-10 10-16 14-16s12 6 14 16c2 10-4 16-14 16s-16-6-14-16z"
+            fill="rgba(46,204,113,.18)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="26" cy="28" r="4" fill="rgba(255,255,255,.8)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="38" cy="28" r="4" fill="rgba(255,255,255,.8)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="26" cy="28" r="1.8" fill="rgba(14,26,43,.8)"/>
+          <circle cx="38" cy="28" r="1.8" fill="rgba(14,26,43,.8)"/>
+          <path d="M26 44c4 3 8 3 12 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      lizard: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 40c6-10 24-14 30-4 4 6 0 14-8 14H30c-6 0-10-4-12-10z"
+            fill="rgba(52,168,83,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M46 28l8-6" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M22 46l-6 8M28 50l-2 10M36 50l2 10M42 46l6 8" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="40" cy="34" r="2.5" fill="rgba(14,26,43,.8)"/>
+          <path d="M28 42c6 2 10 2 14 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      bird: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M16 36c10-14 22-14 32 0-10 4-18 8-22 16-6-6-8-10-10-16z"
+            fill="rgba(52,168,83,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M48 36l10 2-8 6" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="38" cy="34" r="2.5" fill="rgba(14,26,43,.8)"/>
+        </svg>`,
+      mammal: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 40c0-10 8-18 14-18h0c6 0 14 8 14 18 0 10-6 16-14 16s-14-6-14-16z"
+            fill="rgba(243,156,18,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M24 24l-6-6M40 24l6-6" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="26" cy="38" r="2.5" fill="rgba(14,26,43,.8)"/>
+          <circle cx="38" cy="38" r="2.5" fill="rgba(14,26,43,.8)"/>
+          <path d="M28 46c2 2 6 2 8 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      cell: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M12 34c0-14 10-24 24-24s16 8 16 18-6 26-22 26S12 48 12 34z"
+            fill="rgba(155,89,182,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="34" cy="34" r="8" fill="rgba(255,255,255,.5)" stroke="rgba(14,26,43,.72)" stroke-width="3"/>
+          <circle cx="36" cy="32" r="3" fill="${p.a}"/>
+          <path d="M20 28c2 2 4 2 6 0M18 38c2 2 4 2 6 0M44 46c2 2 4 2 6 0" stroke="${p.b}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      microscope: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M26 14l10-4 6 14-10 4-6-14z" fill="rgba(155,89,182,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M30 26l-6 4c-6 4-8 10-6 18h28" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 48c0 4-4 6-8 6s-8-2-8-6h16z" fill="rgba(14,26,43,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="46" cy="22" r="4" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+        </svg>`,
+      petri: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <circle cx="32" cy="34" r="18" fill="rgba(155,89,182,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <path d="M18 30c6 6 22 6 28 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="26" cy="38" r="3" fill="${p.b}"/>
+          <circle cx="38" cy="40" r="2.5" fill="${p.a}"/>
+          <circle cx="34" cy="28" r="2.5" fill="${p.b}"/>
+        </svg>`,
+      chameleon: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M18 40c2-12 18-22 28-12 8 8 4 22-8 22H30c-6 0-12-4-12-10z"
+            fill="rgba(52,168,83,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M44 44c8 0 10 10 2 10" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="38" cy="34" r="3" fill="rgba(255,255,255,.8)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="38" cy="34" r="1.5" fill="rgba(14,26,43,.85)"/>
+          <path d="M28 42c6 2 10 2 14 0" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="30" cy="30" r="2.5" fill="${p.b}"/>
+        </svg>`,
+      footprint: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M28 52c-8 0-10-10-6-18 2-4 6-6 10-6s8 2 10 6c4 8 2 18-6 18H28z"
+            fill="rgba(243,156,18,.14)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <g fill="${p.a}">
+            <circle cx="22" cy="26" r="3"/><circle cx="28" cy="22" r="3"/><circle cx="34" cy="22" r="3"/><circle cx="40" cy="26" r="3"/>
+          </g>
+        </svg>`,
+      thermo: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 12v28" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M32 40a10 10 0 1 0 10 10c0-4-2-7-4-9V16a6 6 0 0 0-12 0v25c-2 2-4 5-4 9a10 10 0 0 0 10-10z"
+            fill="rgba(231,76,60,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="32" cy="50" r="5" fill="${p.a}"/>
+        </svg>`,
+      spiral: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M34 50c-14 0-20-16-10-26 8-8 22-2 22 10 0 10-12 14-18 8-4-4 0-10 6-10 6 0 8 8 0 12"
+            fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="34" cy="40" r="3" fill="${p.a}"/>
+          <circle cx="40" cy="30" r="2.5" fill="${p.b}"/>
+        </svg>`,
+      tag: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M20 18h22l10 14-10 14H20L10 32l10-14z"
+            fill="rgba(22,160,133,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <circle cx="24" cy="32" r="4" fill="rgba(255,255,255,.65)" stroke="rgba(14,26,43,.72)" stroke-width="3"/>
+          <path d="M32 32h14" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      coral: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <path d="M32 54V30" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M32 40c-6 0-10-6-10-12 8 0 10 4 10 12z" fill="rgba(231,76,60,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M32 38c6 0 10-6 10-12-8 0-10 4-10 12z" fill="rgba(11,132,165,.12)" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linejoin="round"/>
+          <path d="M24 52c0-8-6-12-12-12 0 10 4 14 12 14" fill="none" stroke="${p.a}" stroke-width="3" stroke-linecap="round"/>
+          <path d="M40 52c0-8 6-12 12-12 0 10-4 14-12 14" fill="none" stroke="${p.b}" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+      snow: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <g stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round">
+            <path d="M32 12v40"/><path d="M14 22l36 20"/><path d="M50 22L14 42"/>
+            <path d="M32 12l-6 6M32 12l6 6"/><path d="M32 52l-6-6M32 52l6-6"/>
+            <path d="M14 22l8 0M50 22l-8 0"/><path d="M14 42l8 0M50 42l-8 0"/>
+          </g>
+          <circle cx="32" cy="32" r="5" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+        </svg>`,
+      target: (p) => `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="20" fill="rgba(231,76,60,.10)" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <circle cx="32" cy="32" r="12" fill="none" stroke="rgba(14,26,43,.60)" stroke-width="3"/>
+          <circle cx="32" cy="32" r="5" fill="${p.a}" stroke="rgba(14,26,43,.86)" stroke-width="3"/>
+          <path d="M46 18l10-4-4 10" fill="none" stroke="${p.b}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M44 20l10-10" fill="none" stroke="rgba(14,26,43,.86)" stroke-width="3" stroke-linecap="round"/>
+        </svg>`
+    };
+
+    const ICON_KEY = {
+      "start!": "startflag",
+      "atom": "atom",
+      "dna": "dna",
+      "biodiversity": "globe",
+      "ecosystem": "globe",
+      "abiotic factors": "sunrock",
+      "biotic factors": "pawleaf",
+      "species": "tag",
+      "genetic diversity": "dna",
+      "habitat": "house",
+      "niche": "puzzle",
+      "food web": "network",
+      "energy flow": "arrows",
+      "decomposers": "mushroom",
+      "producers": "plant",
+      "consumers": "mouth",
+      "ecological balance": "scales",
+      "symbiosis": "link",
+      "ecosystems: aquatic": "waves",
+      "ecosystems: forest": "tree",
+      "ecosystems: grassland": "grass",
+      "ecosystems: desert": "cactus",
+      "ecosystems: marine": "waves",
+      "ecosystems: freshwater": "waves",
+      "ecosystems: coral reef": "coral",
+      "ecosystems: tundra": "snow",
+      "ecosystems: urban": "city",
+      "invertebrates": "bug",
+      "vertebrates": "spine",
+      "arthropods": "bug",
+      "mollusks": "shell",
+      "arachnids": "spider",
+      "fish": "fish",
+      "amphibians": "frog",
+      "reptiles": "lizard",
+      "birds": "bird",
+      "mammals": "mammal",
+      "microorganism": "cell",
+      "microscopic life": "cell",
+      "microscopic organisms": "cell",
+      "microscopic ecosystems": "petri",
+      "microscopic observation": "microscope",
+      "adaptation": "chameleon",
+      "behavioral adaptation": "footprint",
+      "physiological adaptation": "thermo",
+      "evolution": "spiral",
+      "natural selection": "target",
+      "camouflage": "chameleon"
+    };
+
+    function normalizeWord(word) {
+      return String(word || "").trim().toLowerCase();
+    }
+
+    function categoryFor(word) {
+      const lower = String(word ?? "").trim().toLowerCase();
+
+      if (normalizeWord(word) === "start!") return "start";
+
+      if (lower.startsWith("ecosystems:")) {
+        const sub = lower.split(":").slice(1).join(":").trim();
+        if (sub.includes("aquatic")) return "eco_aquatic";
+        if (sub.includes("forest")) return "eco_forest";
+        if (sub.includes("grassland")) return "eco_grassland";
+        if (sub.includes("desert")) return "eco_desert";
+        if (sub.includes("marine")) return "eco_marine";
+        if (sub.includes("freshwater")) return "eco_freshwater";
+        if (sub.includes("coral reef") || sub.includes("coralreef")) return "eco_coralreef";
+        if (sub.includes("tundra")) return "eco_tundra";
+        if (sub.includes("urban")) return "eco_urban";
+        return "ecosystems";
+      }
+
+      const w = normalizeWord(word);
+
+      const animals = new Set([
+        "invertebrates", "vertebrates", "arthropods", "mollusks", "arachnids",
+        "fish", "amphibians", "reptiles", "birds", "mammals"
+      ]);
+      if (animals.has(w)) return "animals";
+
+      if (w.includes("micro") || w.includes("microscopic")) return "micro";
+      if (w.includes("dna") || w.includes("genetic") || w.includes("atom")) return "genetics";
+      if (w.includes("evolution") || w.includes("natural selection") || w.includes("camouflage") || w.includes("adaptation")) return "evolution";
+
+      const eco = new Set([
+        "biodiversity", "ecosystem", "abiotic factors", "biotic factors", "species",
+        "habitat", "niche", "food web", "energy flow", "decomposers", "producers", "consumers",
+        "ecological balance", "symbiosis"
+      ]);
+      if (eco.has(w)) return "ecology";
+
+      return "general";
+    }
+
+    function iconKeyFor(word) {
+      const w = normalizeWord(word);
+      if (ICON_KEY[w]) return ICON_KEY[w];
+
+      if (w.includes("dna")) return "dna";
+      if (w.includes("atom")) return "atom";
+      if (w.includes("food")) return "network";
+      if (w.includes("energy")) return "arrows";
+      if (w.includes("decomp")) return "mushroom";
+      if (w.includes("producer")) return "plant";
+      if (w.includes("consumer")) return "mouth";
+      if (w.includes("symbio")) return "link";
+      if (w.includes("habitat")) return "house";
+      if (w.includes("niche")) return "puzzle";
+      if (w.includes("micro")) return "cell";
+      if (w.includes("ecosystems:")) return "globe";
+      return "leaf";
+    }
+
+    function svgDataUri(svgString) {
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgString.trim());
+    }
+
+    function iconFor(word) {
+      const cat = categoryFor(word);
+      const pal = CATEGORY[cat] || CATEGORY.general;
+      const key = iconKeyFor(word);
+      const maker = SVG[key] || SVG.leaf;
+      return svgDataUri(maker(pal));
+    }
+
+    const VOCAB = [
+      "Start!",
+      "Atom", "DNA", "Biodiversity", "Ecosystem", "Abiotic factors", "Biotic factors", "Species", "Genetic diversity",
+      "Habitat", "Niche", "Ecosystem", "Food web", "Energy flow", "Decomposers", "Producers", "Consumers",
+      "Ecological balance", "Symbiosis", "Ecosystems: Aquatic", "Ecosystems: Forest", "Ecosystems: Grassland",
+      "Ecosystems: Desert", "Ecosystems: Marine", "Ecosystems: Freshwater", "Ecosystems: Coral reef",
+      "Ecosystems: Tundra", "Ecosystems: Urban", "Invertebrates", "Vertebrates", "Arthropods", "Mollusks",
+      "Arachnids", "Fish", "Amphibians", "Reptiles", "Birds", "Mammals",
+      "Microorganism",
+      "Microscopic life", "Microscopic organisms", "Microscopic ecosystems", "Microscopic observation",
+      "Adaptation", "Behavioral adaptation", "Physiological adaptation", "Evolution", "Natural selection"
+    ];
+
+    const BOARD_TILES = 48;
+
+    // Player templates + dynamic player list (2/3/4)
+    const PLAYER_TEMPLATES = [
+      { color: "#e74c3c" }, // Player 1
+      { color: "#3498db" }, // Player 2
+      { color: "#2ecc71" }, // Player 3
+      { color: "#9b59b6" }  // Player 4
+    ];
+
+    let PLAYERS = []; // built after selecting 2/3/4
+    let hasChosenPlayers = false;
+
+    function buildPlayers(n) {
+      const count = Math.max(2, Math.min(4, Number(n) || 2));
+      PLAYERS = PLAYER_TEMPLATES.slice(0, count).map((t, i) => ({
+        id: i + 1,
+        name: `Player ${i + 1}`,
+        color: t.color,
+        pos: 0,
+        badges: 0
+      }));
+    }
+
+    let current = 0;
+    let lastRoll = null;
+    let selectedTileIndex = null;
+
+    let turnActive = false;
+    let badgeAwardedThisTurn = false;
+
+    let pendingMove = null; // { playerIndex, from, to }
+
+    // game over guard
+    let gameOver = false;
+
+    // bonus overlay state (freeze until user clicks Next)
+    let waitingBonusAck = false;
+
+    // NEW: after win -> allow only "Reset Game"
+    let boardCheckMode = false;
+
+    const boardWords = Array.from({ length: BOARD_TILES }, (_, i) => VOCAB[i % VOCAB.length]);
+
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+    const randInt = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+
+    // convert hex (#RGB / #RRGGBB) to rgba()
+    function hexToRgba(hex, alpha = 1) {
+      const h = String(hex || "").trim();
+      if (h.startsWith("rgba(") || h.startsWith("rgb(")) return h;
+
+      let s = h.replace("#", "");
+      if (s.length === 3) s = s.split("").map(ch => ch + ch).join("");
+      if (s.length !== 6) return `rgba(20,80,200,${alpha})`;
+
+      const r = parseInt(s.slice(0, 2), 16);
+      const g = parseInt(s.slice(2, 4), 16);
+      const b = parseInt(s.slice(4, 6), 16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
+
+    const CHALLENGES = [
+      (word) => ({ title: "Define it", text: `In 1–2 sentences, define <b>${word}</b> in your own words.`, ext: "Give a real-life example." }),
+      (word) => ({ title: "Example vs non-example", text: `Give one example of <b>${word}</b> and one non-example. Explain why.`, ext: "If unsure, discuss and vote." }),
+      (word) => ({ title: "Draw it (quick sketch)", text: `Sketch <b>${word}</b> and label 2 parts.`, ext: "Explain your sketch in 20 seconds." }),
+      (word) => ({ title: "Use it in context", text: `Create a correct science sentence using <b>${word}</b>.`, ext: "Add one more detail to improve it." }),
+      (word) => ({ title: "Compare", text: `Compare <b>${word}</b> with another word. Similarities and differences?`, ext: "Use a Venn diagram if you want." }),
+      (word) => ({ title: "Cause & effect", text: `Describe a cause-and-effect relationship involving <b>${word}</b>.`, ext: "What happens if it changes?" })
+    ];
+
+    const ECOSYSTEM_PROMPTS = [
+      "Name two biotic and two abiotic factors there.",
+      "Describe one food chain that could exist there.",
+      "Name one adaptation an animal might need to survive there."
+    ];
+
+    function pickChallenge(word) {
+      const base = CHALLENGES[randInt(0, CHALLENGES.length - 1)](word);
+      if (word.toLowerCase().includes("ecosystems:")) {
+        base.ext = ECOSYSTEM_PROMPTS[randInt(0, ECOSYSTEM_PROMPTS.length - 1)];
+      }
+      return base;
+    }
+
+    const boardEl = document.getElementById("board");
+    const playersEl = document.getElementById("players");
+    const diceValEl = document.getElementById("diceVal");
+    const currentEl = document.getElementById("currentPlayer");
+    const turnHintEl = document.getElementById("turnHint");
+
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMeta = document.getElementById("modalMeta");
+    const challengeBox = document.getElementById("challengeBox");
+    const extensionBox = document.getElementById("extensionBox");
+
+    // start overlay elements
+    const startOverlay = document.getElementById("startOverlay");
+    const btnPick2 = document.getElementById("btnPick2");
+    const btnPick3 = document.getElementById("btnPick3");
+    const btnPick4 = document.getElementById("btnPick4");
+
+    const turnOverlay = document.getElementById("turnOverlay");
+    const turnMsg = document.getElementById("turnMsg");
+    const btnPlay = document.getElementById("btnPlay");
+
+    // win overlay elements
+    const winOverlay = document.getElementById("winOverlay");
+    const winTitle = document.getElementById("winTitle");
+    const winSubtitle = document.getElementById("winSubtitle");
+    const scoreTable = document.getElementById("scoreTable");
+    const btnCheckBoard = document.getElementById("btnCheckBoard");
+
+    // bonus overlay elements
+    const bonusOverlay = document.getElementById("bonusOverlay");
+    const bonusTitle = document.getElementById("bonusTitle");
+    const bonusText = document.getElementById("bonusText");
+    const btnBonusNext = document.getElementById("btnBonusNext");
+
+    const btnRoll = document.getElementById("btnRoll");
+    const btnEndTurn = document.getElementById("btnEndTurn");
+    const btnReset = document.getElementById("btnReset");
+
+    const btnTryAgain = document.getElementById("btnTryAgain");
+    const btnBadge = document.getElementById("btnBadge");
+    const btnNewChallenge = document.getElementById("btnNewChallenge");
+
+    function showStartOverlay() {
+      hideWinOverlay();
+      hideBonusOverlay();
+      closeModal();
+      hideTurnOverlay();
+
+      startOverlay.style.display = "flex";
+      startOverlay.setAttribute("aria-hidden", "false");
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+    }
+
+    function hideStartOverlay() {
+      startOverlay.style.display = "none";
+      startOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function beginWithPlayers(n) {
+      buildPlayers(n);
+      hasChosenPlayers = true;
+
+      current = 0;
+      lastRoll = null;
+      selectedTileIndex = null;
+      turnActive = false;
+      badgeAwardedThisTurn = false;
+      pendingMove = null;
+      gameOver = false;
+      waitingBonusAck = false;
+      boardCheckMode = false;
+
+      hideStartOverlay();
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+      showTurnOverlay();
+    }
+
+    function updateHeader() {
+      if (!PLAYERS.length) {
+        currentEl.textContent = "—";
+        diceValEl.textContent = (lastRoll === null) ? "—" : String(lastRoll);
+        turnHintEl.textContent = "Select number of players to start.";
+        btnRoll.disabled = true;
+        btnEndTurn.disabled = true;
+        btnReset.disabled = false;
+
+        btnBadge.disabled = true;
+        btnBadge.textContent = "✅ Give current player a badge";
+        return;
+      }
+
+      currentEl.textContent = PLAYERS[current].id;
+
+      if (gameOver) {
+        if (boardCheckMode) {
+          turnHintEl.textContent = "Check board and positions. Use “Reset Game” to restart.";
+        } else {
+          turnHintEl.textContent = "Game over. Press “Check board and positions!”";
+        }
+        btnRoll.disabled = true;
+        btnEndTurn.disabled = true;
+        btnReset.disabled = false;
+      } else {
+        btnEndTurn.disabled = false;
+        btnReset.disabled = false;
+
+        if (!turnActive) {
+          turnHintEl.textContent = "Press “Play!” to start the turn.";
+          btnRoll.disabled = true;
+        } else {
+          btnRoll.disabled = false;
+          turnHintEl.textContent = "Roll the dice.";
+        }
+      }
+
+      if (waitingBonusAck && !gameOver) {
+        turnHintEl.textContent = "Bonus applied. Press “Next player turn!”";
+        btnRoll.disabled = true;
+        btnEndTurn.disabled = true;
+      }
+
+      if (boardCheckMode) {
+        btnRoll.disabled = true;
+        btnEndTurn.disabled = true;
+        btnBadge.disabled = true;
+      }
+
+      diceValEl.textContent = (lastRoll === null) ? "—" : String(lastRoll);
+
+      btnBadge.disabled = badgeAwardedThisTurn || gameOver || waitingBonusAck || boardCheckMode;
+      btnBadge.textContent = badgeAwardedThisTurn
+        ? "✅ Badge already awarded this turn"
+        : "✅ Give current player a badge";
+    }
+
+    function renderPlayers() {
+      playersEl.innerHTML = "";
+
+      if (!PLAYERS.length) {
+        const msg = document.createElement("div");
+        msg.className = "muted";
+        msg.style.padding = "8px 2px";
+        msg.textContent = "Choose 2, 3, or 4 players to begin.";
+        playersEl.appendChild(msg);
+        return;
+      }
+
+      PLAYERS.forEach((p, idx) => {
+        const card = document.createElement("div");
+        card.className = "playerCard";
+
+        const left = document.createElement("div");
+        left.className = "playerLeft";
+
+        const token = document.createElement("div");
+        token.className = "token";
+        token.style.background = p.color;
+
+        const text = document.createElement("div");
+        const star = (idx === current && !gameOver && !boardCheckMode) ? " ⭐" : "";
+        text.innerHTML = `
+          <div class="playerName" style="color:${p.color}">${p.name}${star}</div>
+          <div class="playerMeta">Position: ${p.pos + 1}/${BOARD_TILES}</div>
+        `;
+
+        left.appendChild(token);
+        left.appendChild(text);
+
+        const badges = document.createElement("div");
+        badges.className = "badges";
+        if (p.badges === 0) {
+          const empty = document.createElement("span");
+          empty.className = "badge";
+          empty.textContent = "0 badges";
+          badges.appendChild(empty);
+        } else {
+          for (let i = 0; i < p.badges; i++) {
+            const b = document.createElement("span");
+            b.className = "badge";
+            b.textContent = "🏅";
+            badges.appendChild(b);
+          }
+        }
+
+        card.appendChild(left);
+        card.appendChild(badges);
+        playersEl.appendChild(card);
+      });
+    }
+
+    function tileOccupants(tileIndex) {
+      if (!PLAYERS.length) return [];
+      return PLAYERS.filter(p => p.pos === tileIndex);
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+      boardWords.forEach((word, i) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.dataset.index = i;
+
+        const cat = categoryFor(word);
+        tile.dataset.cat = cat;
+        const pal = CATEGORY[cat] || CATEGORY.general;
+        tile.style.setProperty("--cat-border", pal.border);
+        tile.style.setProperty("--cat-stripe", pal.stripe);
+        tile.style.setProperty("--cat-bg", `linear-gradient(180deg, ${pal.bg1}, ${pal.bg2})`);
+
+        const occ = document.createElement("div");
+        occ.className = "occupants";
+        tileOccupants(i).forEach(p => {
+          const d = document.createElement("div");
+          d.className = "dot";
+          d.style.background = p.color;
+          occ.appendChild(d);
+        });
+
+        const top = document.createElement("div");
+        top.className = "tileTop";
+
+        const img = document.createElement("img");
+        img.className = "icon";
+        img.alt = "icon";
+        img.src = iconFor(word);
+        img.onerror = () => { img.remove(); };
+
+        const title = document.createElement("div");
+        title.className = "tileTitle";
+        title.textContent = word;
+
+        top.appendChild(img);
+        top.appendChild(title);
+
+        const meta = document.createElement("div");
+        meta.className = "tileMeta";
+        meta.innerHTML = `<span class="tileIndex">#${String(i + 1).padStart(2, "0")}</span>`;
+
+        tile.appendChild(occ);
+        tile.appendChild(top);
+        tile.appendChild(meta);
+
+        tile.addEventListener("click", () => openTile(i));
+        tile.addEventListener("touchstart", () => { }, { passive: true });
+        boardEl.appendChild(tile);
+      });
+    }
+
+    function openTile(i) {
+      if (!PLAYERS.length) return;
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+
+      selectedTileIndex = i;
+      const word = boardWords[i];
+      const challenge = pickChallenge(word);
+      const p = PLAYERS[current];
+
+      modalTitle.textContent = word;
+
+      let diceInfo = "";
+      if (lastRoll !== null) {
+        diceInfo = ` Dice result: ${lastRoll} •`;
+      }
+
+      let moveInfo = "";
+      if (pendingMove && pendingMove.playerIndex === current) {
+        moveInfo = ` Pending move: ${pendingMove.from + 1} → ${pendingMove.to + 1}`;
+      }
+
+      modalMeta.textContent = `Tile #${i + 1} • Current: Player ${p.id} •${diceInfo}${moveInfo}`;
+
+      challengeBox.innerHTML = `<b>${challenge.title}</b><div>${challenge.text}</div>`;
+      extensionBox.textContent = challenge.ext;
+
+      updateHeader();
+
+      modalBackdrop.style.display = "flex";
+      modalBackdrop.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      modalBackdrop.style.display = "none";
+      modalBackdrop.setAttribute("aria-hidden", "true");
+    }
+
+    function showTurnOverlay() {
+      if (!PLAYERS.length) return;
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+      const p = PLAYERS[current];
+      turnMsg.textContent = `Player ${p.id} it’s your turn!`;
+      turnMsg.style.color = p.color;
+      turnOverlay.style.display = "flex";
+      turnOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hideTurnOverlay() {
+      turnOverlay.style.display = "none";
+      turnOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function showWinOverlay(winnerIndex) {
+      if (!PLAYERS.length) return;
+
+      const w = PLAYERS[winnerIndex];
+      gameOver = true;
+      waitingBonusAck = false;
+      boardCheckMode = false; // only locks after pressing "Check board..."
+
+      try {
+        sfxSuccess.currentTime = 0;
+        sfxSuccess.play();
+      } catch (err) { }
+
+      winTitle.textContent = `Congratulations Player ${w.id}! You won the Biodiversity Battle!`;
+      winTitle.style.color = w.color;
+
+      // hide subtitle (scoreboard comes right after)
+      winSubtitle.textContent = "";
+      winSubtitle.style.display = "none";
+
+      scoreTable.innerHTML = "";
+      PLAYERS.forEach((p) => {
+        const row = document.createElement("div");
+        row.className = "scoreRow glowRow";
+        row.style.color = p.color;
+
+        const left = document.createElement("div");
+        left.className = "scoreLeft";
+
+        const dot = document.createElement("div");
+        dot.className = "scoreDot";
+        dot.style.background = p.color;
+
+        const name = document.createElement("div");
+        name.className = "scoreName";
+        name.textContent = `Player ${p.id}`;
+        name.style.color = p.color; // ✅ nome com a cor do jogador
+
+        left.appendChild(dot);
+        left.appendChild(name);
+
+        const badges = document.createElement("div");
+        badges.className = "scoreBadges";
+        badges.textContent = (p.badges > 0) ? "🏅".repeat(p.badges) : "—";
+
+        row.appendChild(left);
+        row.appendChild(badges);
+
+        // glow for EVERY player row
+        row.style.setProperty("--rowBorder", hexToRgba(p.color, 0.35));
+        row.style.setProperty("--rowGlow", hexToRgba(p.color, 0.18));
+        row.style.setProperty("--rowGlowSoft", hexToRgba(p.color, 0.12));
+
+        // stronger glow for winner
+        if (p.id === w.id) {
+          row.classList.add("isWinner");
+          row.style.setProperty("--winBorder", hexToRgba(p.color, 0.50));
+          row.style.setProperty("--winGlow", hexToRgba(p.color, 0.28));
+          row.style.setProperty("--winGlowSoft", hexToRgba(p.color, 0.18));
+        }
+
+        scoreTable.appendChild(row);
+      });
+
+      hideTurnOverlay();
+      closeModal();
+      hideBonusOverlay();
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+
+      winOverlay.style.display = "flex";
+      winOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hideWinOverlay() {
+      winOverlay.style.display = "none";
+      winOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function showBonusOverlay({ playerIndex, badges, bonusTiles }) {
+      if (!PLAYERS.length) return;
+
+      const p = PLAYERS[playerIndex];
+
+      waitingBonusAck = true;
+
+      bonusTitle.textContent = "Bonus Move!";
+      bonusTitle.style.color = p.color;
+
+      const badgeStr = (badges > 0) ? "🏅".repeat(badges) : "—";
+      bonusText.textContent = `${p.name} has ${badgeStr} badges. Bonus: ${p.name} moved +${bonusTiles} tiles.`;
+
+      bonusOverlay.style.display = "flex";
+      bonusOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function hideBonusOverlay() {
+      waitingBonusAck = false;
+      bonusOverlay.style.display = "none";
+      bonusOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function startTurn() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+
+      badgeAwardedThisTurn = false;
+      turnActive = true;
+      lastRoll = null;
+      selectedTileIndex = null;
+      pendingMove = null;
+
+      hideTurnOverlay();
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+    }
+
+    function rollDice() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (!turnActive || gameOver || waitingBonusAck || boardCheckMode) return;
+
+      try {
+        sfxDice.currentTime = 0;
+        sfxDice.play();
+      } catch (err) { }
+
+      lastRoll = randInt(1, 6);
+      const p = PLAYERS[current];
+
+      const to = (p.pos + lastRoll) % BOARD_TILES;
+      pendingMove = { playerIndex: current, from: p.pos, to };
+
+      turnActive = false;
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+
+      openTile(to);
+    }
+
+    function nextPlayer() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+
+      current = (current + 1) % PLAYERS.length;
+      turnActive = false;
+      lastRoll = null;
+      selectedTileIndex = null;
+      pendingMove = null;
+      badgeAwardedThisTurn = false;
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+      showTurnOverlay();
+    }
+
+    function closeAndAdvanceNoBadge() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+      pendingMove = null;
+      closeModal();
+      nextPlayer();
+    }
+
+    function resetGame() {
+      hideWinOverlay();
+      hideBonusOverlay();
+      closeModal();
+      hideTurnOverlay();
+
+      hasChosenPlayers = false;
+
+      PLAYERS = [];
+      current = 0;
+      lastRoll = null;
+      selectedTileIndex = null;
+      turnActive = false;
+      badgeAwardedThisTurn = false;
+      pendingMove = null;
+      gameOver = false;
+      waitingBonusAck = false;
+      boardCheckMode = false;
+
+      // restore subtitle defaults (safe)
+      winSubtitle.style.display = "";
+      winSubtitle.textContent = "You won the Biodiversity Battle!";
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+
+      showStartOverlay();
+    }
+
+    function awardBadgeAndAdvance() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (badgeAwardedThisTurn || gameOver || waitingBonusAck || boardCheckMode) return;
+
+      try {
+        sfxWin.currentTime = 0;
+        sfxWin.play();
+      } catch (err) { }
+
+      const p = PLAYERS[current];
+
+      if (pendingMove && pendingMove.playerIndex === current) {
+        p.pos = pendingMove.to;
+      }
+      pendingMove = null;
+
+      p.badges = clamp(p.badges + 1, 0, 99);
+      badgeAwardedThisTurn = true;
+
+      if (p.badges >= 5) {
+        closeModal();
+        renderPlayers();
+        renderBoard();
+        showWinOverlay(current);
+        return;
+      }
+
+      const bonusMap = { 2: 5, 3: 10, 4: 10 };
+      const bonusTiles = bonusMap[p.badges] ?? 0;
+
+      if (bonusTiles > 0) {
+        p.pos = (p.pos + bonusTiles) % BOARD_TILES;
+
+        renderPlayers();
+        renderBoard();
+        closeModal();
+
+        updateHeader();
+        showBonusOverlay({ playerIndex: current, badges: p.badges, bonusTiles });
+        return;
+      }
+
+      renderPlayers();
+      renderBoard();
+
+      closeModal();
+      nextPlayer();
+    }
+
+    function newChallenge() {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (selectedTileIndex === null || gameOver || waitingBonusAck || boardCheckMode) return;
+      const word = boardWords[selectedTileIndex];
+      const challenge = pickChallenge(word);
+      challengeBox.innerHTML = `<b>${challenge.title}</b><div>${challenge.text}</div>`;
+      extensionBox.textContent = challenge.ext;
+    }
+
+    // Start overlay buttons
+    btnPick2.addEventListener("click", () => beginWithPlayers(2));
+    btnPick3.addEventListener("click", () => beginWithPlayers(3));
+    btnPick4.addEventListener("click", () => beginWithPlayers(4));
+
+    btnPlay.addEventListener("click", startTurn);
+    btnRoll.addEventListener("click", rollDice);
+    btnEndTurn.addEventListener("click", nextPlayer);
+    btnReset.addEventListener("click", resetGame);
+
+    btnTryAgain.addEventListener("click", () => {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+      try {
+        sfxFail.currentTime = 0;
+        sfxFail.play();
+      } catch (err) { }
+      closeAndAdvanceNoBadge();
+    });
+
+    btnBadge.addEventListener("click", awardBadgeAndAdvance);
+    btnNewChallenge.addEventListener("click", newChallenge);
+
+    btnCheckBoard.addEventListener("click", () => {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (!gameOver) return;
+
+      // enter inspection mode: disable everything except Reset Game
+      boardCheckMode = true;
+
+      hideWinOverlay();
+      closeModal();
+      hideBonusOverlay();
+      hideTurnOverlay();
+
+      updateHeader();
+      renderPlayers();
+      renderBoard();
+    });
+
+    btnBonusNext.addEventListener("click", () => {
+      if (!PLAYERS.length) return showStartOverlay();
+      if (gameOver || boardCheckMode) return;
+      hideBonusOverlay();
+      nextPlayer();
+    });
+
+    modalBackdrop.addEventListener("click", (e) => {
+      if (!PLAYERS.length) return;
+      if (gameOver || waitingBonusAck || boardCheckMode) return;
+      if (e.target === modalBackdrop) closeAndAdvanceNoBadge();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (!PLAYERS.length) return;
+        if (gameOver || waitingBonusAck || boardCheckMode) return;
+        closeAndAdvanceNoBadge();
+      }
+    });
+
+    // Initial render
+    updateHeader();
+    renderPlayers();
+    renderBoard();
+    showStartOverlay();
+  </script>
+</body>
+
+</html>
