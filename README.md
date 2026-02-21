@@ -2,7 +2,7 @@
 
 ## [Jogue History Battle Agora!](https://cometsinthesky.github.io/history-battle-game/)
 
-Um jogo interativo e ideal para sala de aula para apoiar a aprendizagem de **História Contemporânea**, com foco em **Primeira Guerra Mundial, Período Entreguerras e Segunda Guerra Mundial** — indicado para **Middle Years / Year 6–9** (adaptável para outros anos e currículos).
+Um jogo interativo e ideal para sala de aula para apoiar a aprendizagem de **História Contemporânea**, com foco em **Primeira Guerra Mundial, Período Entreguerras e Segunda Guerra Mundial**. Indicado para **Middle Years / Year 6–9** (adaptável para outros anos e currículos).
 
 Este projeto é ideal para professores que querem uma forma rápida e envolvente de reforçar:
 - causas e consequências da Primeira Guerra Mundial
