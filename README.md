@@ -1,4 +1,4 @@
-## History Battle Online Board Game 🕹️🌱<img src="https://raw.githubusercontent.com/cometsinthesky/biodiversity-battle-game/main/images/biodiversity-battle-og-image.png" alt="Biodiversity Battle OG Image" width="200" height="200" />
+## History Battle Online Board Game 🕹️🌎📜🗺️🏛️𓍝<img src="https://raw.githubusercontent.com/cometsinthesky/biodiversity-battle-game/main/images/biodiversity-battle-og-image.png" alt="Biodiversity Battle OG Image" width="200" height="200" />
 
 ## [Play History Battle Now!](https://cometsinthesky.github.io/biodiversity-battle-game/)
 
