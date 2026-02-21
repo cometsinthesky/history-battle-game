@@ -1,6 +1,6 @@
-## Biodiversity Battle Online Board Game 🕹️🧬🔬🦠🧫🌱<img src="https://raw.githubusercontent.com/cometsinthesky/biodiversity-battle-game/main/images/biodiversity-battle-og-image.png" alt="Biodiversity Battle OG Image" width="200" height="200" />
+## History Battle Online Board Game 🕹️🌱<img src="https://raw.githubusercontent.com/cometsinthesky/biodiversity-battle-game/main/images/biodiversity-battle-og-image.png" alt="Biodiversity Battle OG Image" width="200" height="200" />
 
-## [Play Biodiversity Battle Now!](https://cometsinthesky.github.io/biodiversity-battle-game/)
+## [Play History Battle Now!](https://cometsinthesky.github.io/biodiversity-battle-game/)
 
 An interactive, classroom-friendly game to support **Biodiversity / Diversity of Living Things** learning - designed for **Middle Years / Year 6–9** contexts and adaptable to different curricula.
 
