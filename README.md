@@ -1,4 +1,4 @@
-## History Battle Online Board Game 🕹️🌎📜📚🗺️🏛️🗓️ <img src="https://raw.githubusercontent.com/cometsinthesky/history-battle-game/main/images/history-battle-og-image.png" alt="History Battle OG Image" width="200" height="200" />
+## History Battle Online Board Game 🕹️🌎📜📚🗺️🏛️ <img src="https://raw.githubusercontent.com/cometsinthesky/history-battle-game/main/images/history-battle-og-image.png" alt="History Battle OG Image" width="200" height="200" />
 
 ## [Jogue History Battle Agora!](https://cometsinthesky.github.io/history-battle-game/)
 
